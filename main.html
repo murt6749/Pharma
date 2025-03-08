@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pharmacy Quiz App</title>
+  <style>
+    /* Global Styles */
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: floralwhite;
+      display: flex;
+    }
+    /* Sidebar Styles */
+    .sidebar {
+      width: 250px;
+      background: blueviolet;
+      color: #ecf0f1;
+      height: 100vh;
+      position: fixed;
+      top: 0;
+      left: 0;
+      overflow-y: auto;
+      transition: transform 0.3s ease;
+      z-index: 2;
+    }
+    /* Sidebar header with header image and title */
+    .sidebar-header {
+      text-align: center;
+      padding: 10px;
+      background: indianred;
+    }
+    .sidebar-header img {
+      max-width: 90%;
+      height: auto;
+      border-radius: 4px;
+    }
+    .sidebar-header h2 {
+      margin: 10px 0 0;
+      font-size: 18px;
+    }
+    /* Navigation Menu */
+    .menu-item {
+      margin: 10px 0;
+    }
+    .menu-item > button {
+      width: 100%;
+      background: none;
+      border: none;
+      color: blanchedalmond;
+      padding: 10px;
+      text-align: left;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      transition: background 0.3s;
+    }
+    .menu-item > button:hover {
+      background: blue;
+    }
+    .topic-logo {
+      width: 20px;
+      height: 20px;
+      margin-right: 8px;
+      vertical-align: middle;
+    }
+    /* Submenu (Chapters) */
+    .submenu {
+      list-style: none;
+      padding-left: 15px;
+      margin-top: 5px;
+      display: none;
+    }
+    .submenu li button {
+      width: 100%;
+      background: goldenrod;
+      border: none;
+      color: red;
+      padding: 8px;
+      text-align: left;
+      font-size: 14px;
+      cursor: pointer;
+      border-radius: 4px;
+      margin-bottom: 5px;
+      transition: background 0.3s;
+    }
+    .submenu li button:hover {
+      background: #4a6a88;
+    }
+    /* Subsubmenu (Quiz Links) */
+    .subsubmenu {
+      list-style: none;
+      padding-left: 15px;
+      margin-top: 5px;
+      display: none
+    }
+    .subsubmenu li a {
+      text-decoration: none;
+      color: black;
+      padding: 6px;
+      display: block;
+      font-size: 13px;
+      background: floralwhite;
+      border-radius: 4px;
+      margin-bottom: 5px;
+      transition: background 0.3s, color 0.3s;
+    }
+    .subsubmenu li a:hover {
+      background: greenyellow;
+      color: yellow;
+    }
+    /* Main Content Area */
+    .content {
+      flex: 1;
+      padding: 20px;
+      transition: margin-left 0.3s ease;
+      margin-left: 250px;
+    }
+    .content-header {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+    .content-header h1 {
+      margin: 0;
+      font-size: 28px;
+      color: sandybrown;
+    }
+    .content p {
+      font-size: 16px;
+      line-height: 1.6;
+      color: #345695e;
+    }
+    .content img {
+      max-width: 100%;
+      margin: 10px 0;
+      border-radius: 5px;
+    }
+    /* Custom Hamburger Toggle Button */
+    .toggle-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      z-index: 3;
+      display: none;
+    }
+    .toggle-btn .line {
+      display: block;
+      height: 4px;
+      background: #2c3e50;
+      margin: 4px 0;
+      transition: all 0.3s ease;
+    }
+    .toggle-btn .line1 {
+      width: 20px;
+    }
+    .toggle-btn .line2 {
+      width: 15px;
+    }
+    /* Mobile Styles */
+    @media (max-width: 768px) {
+      .sidebar {
+        transform: translateX(-250px);
+      }
+      .sidebar.visible {
+        transform: translateX(0);
+      }
+      .content {
+        margin-left: 0;
+      }
+      .content.sidebar-open {
+        margin-left: 250px;
+      }
+      .toggle-btn {
+        display: block;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Sidebar Navigation -->
+  <div class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+     
+      <h2>Pharmacy Quiz</h2>
+    </div>
+    <!-- Example for subject CNP -->
+    <div class="menu-item">
+      <button onclick="toggleSubmenu(this)">
+        <img src="download (2).png" alt="CNP Logo" class="topic-logo"> CNP
+      </button>
+      <ul class="submenu">
+        <li>
+          <button onclick="toggleSubsubmenu(this)">Chapter 1</button>
+          <ul class="subsubmenu">
+            <li><a href="cnp1easy.html">Easy Quiz</a></li>
+            <li><a href="cnp1medium.html">Medium Quiz</a></li>
+            <li><a href="cnp1hard.html">Hard Quiz</a></li>
+            <li><a href="cno1ad.html">Ad</a></li>
+          </ul>
+        </li>
+        <li>
+          <button onclick="toggleSubsubmenu(this)">Chapter 2</button>
+          <ul class="subsubmenu">
+            <li><a href="easy_quiz2.html">Easy Quiz</a></li>
+            <li><a href="medium_quiz2.html">Medium Quiz</a></li>
+            <li><a href="hard_quiz2.html">Hard Quiz</a></li>
+            <li><a href="ad2.html">Ad</a></li>
+          </ul>
+        </li>
+        <!-- Chapters 3 to 8 (repeat as needed) -->
+        <li>
+          <button onclick="toggleSubsubmenu(this)">Chapter 3</button>
+          <ul class="subsubmenu">
+            <li><a href="easy_quiz3.html">Easy Quiz</a></li>
+            <li><a href="medium_quiz3.html">Medium Quiz</a></li>
+            <li><a href="hard_quiz3.html">Hard Quiz</a></li>
+            <li><a href="ad3.html">Ad</a></li>
+          </ul>
+        </li>
+        <li>
+          <button onclick="toggleSubsubmenu(this)">Chapter 4</button>
+          <ul class="subsubmenu">
+            <li><a href="easy_quiz4.html">Easy Quiz</a></li>
+            <li><a href="medium_quiz4.html">Medium Quiz</a></li>
+            <li><a href="hard_quiz4.html">Hard Quiz</a></li>
+            <li><a href="ad4.html">Ad</a></li>
+          </ul>
+        </li>
+        <li>
+          <button onclick="toggleSubsubmenu(this)">Chapter 5</button>
+          <ul class="subsubmenu">
+            <li><a href="easy_quiz5.html">Easy Quiz</a></li>
+            <li><a href="medium_quiz5.html">Medium Quiz</a></li>
+            <li><a href="hard_quiz5.html">Hard Quiz</a></li>
+            <li><a href="ad5.html">Ad</a></li>
+          </ul>
+        </li>
+        <li>
+          <button onclick="toggleSubsubmenu(this)">Chapter 6</button>
+          <ul class="subsubmenu">
+            <li><a href="easy_quiz6.html">Easy Quiz</a></li>
+            <li><a href="medium_quiz6.html">Medium Quiz</a></li>
+            <li><a href="hard_quiz6.html">Hard Quiz</a></li>
+            <li><a href="ad6.html">Ad</a></li>
+          </ul>
+        </li>
+        <li>
+          <button onclick="toggleSubsubmenu(this)">Chapter 7</button>
+          <ul class="subsubmenu">
+            <li><a href="easy_quiz7.html">Easy Quiz</a></li>
+            <li><a href="medium_quiz7.html">Medium Quiz</a></li>
+            <li><a href="hard_quiz7.html">Hard Quiz</a></li>
+            <li><a href="ad7.html">Ad</a></li>
+          </ul>
+        </li>
+        <li>
+          <button onclick="toggleSubsubmenu(this)">Chapter 8</button>
+          <ul class="subsubmenu">
+            <li><a href="easy_quiz8.html">Easy Quiz</a></li>
+            <li><a href="medium_quiz8.html">Medium Quiz</a></li>
+            <li><a href="hard_quiz8.html">Hard Quiz</a></li>
+            <li><a href="ad8.html">Ad</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+    <!-- Repeat similar blocks for PHY II, PATHOLOGY, BIOCHEM, and OTHER -->
+    <div class="menu-item">
+      <button onclick="toggleSubmenu(this)">
+        <img src="images (1).jpeg" alt="PHY II Logo" class="topic-logo"> PHY II
+      </button>
+      <ul class="submenu">
+        <li>
+          <button onclick="toggleSubsubmenu(this)">Chapter 1</button>
+          <ul class="subsubmenu">
+            <li><a href="phy2_easy_quiz1.html">Easy Quiz</a></li>
+            <li><a href="phy2_medium_quiz1.html">Medium Quiz</a></li>
+            <li><a href="phy2_hard_quiz1.html">Hard Quiz</a></li>
+            <li><a href="phy2_ad1.html">Ad</a></li>
+          </ul>
+        </li>
+        <!-- More chapters as needed -->
+      </ul>
+    </div>
+    <div class="menu-item">
+      <button onclick="toggleSubmenu(this)">
+        <img src="download (3).png" alt="Pathology Logo" class="topic-logo"> PATHOLOGY
+      </button>
+      <ul class="submenu">
+        <li>
+          <button onclick="toggleSubsubmenu(this)">Chapter 1</button>
+          <ul class="subsubmenu">
+            <li><a href="path_easy_quiz1.html">Easy Quiz</a></li>
+            <li><a href="path_medium_quiz1.html">Medium Quiz</a></li>
+            <li><a href="path_hard_quiz1.html">Hard Quiz</a></li>
+            <li><a href="path_ad1.html">Ad</a></li>
+          </ul>
+        </li>
+        <!-- More chapters as needed -->
+      </ul>
+    </div>
+    <div class="menu-item">
+      <button onclick="toggleSubmenu(this)">
+        <img src="download (4).png" alt="Biochem Logo" class="topic-logo"> BIOCHEM
+      </button>
+      <ul class="submenu">
+        <li>
+          <button onclick="toggleSubsubmenu(this)">Chapter 1</button>
+          <ul class="subsubmenu">
+            <li><a href="biochem_easy_quiz1.html">Easy Quiz</a></li>
+            <li><a href="biochem_medium_quiz1.html">Medium Quiz</a></li>
+            <li><a href="biochem_hard_quiz1.html">Hard Quiz</a></li>
+            <li><a href="biochem_ad1.html">Ad</a></li>
+          </ul>
+        </li>
+        <!-- More chapters as needed -->
+      </ul>
+    </div>
+    <div class="menu-item">
+      <button onclick="toggleSubmenu(this)">
+        <img src="download.jpeg" alt="Other Logo" class="topic-logo"> Year in pharmacy
+      </button>
+      <ul class="submenu">
+        <li>
+          <button onclick="toggleSubsubmenu(this)">which year pharmacy </button>
+          <ul class="subsubmenu">
+            <li><a href="other_easy_quiz1.html">2nd year pharmacy</a></li>
+            <li><a href="other_medium_quiz1.html">3rd year pharmacy</a></li>
+            <li><a href="other_hard_quiz1.html">4th year pharmacy</a></li>
+            <li><a href="other_ad1.html">5th year pharmacy</a></li>
+          </ul>
+        </li>
+        <!-- More chapters as needed -->
+      </ul>
+    </div>
+  </div>
+
+  <!-- Main Content Area -->
+  <div class="content" id="content">
+    <div class="content-header">
+      <!-- Toggle button inside header -->
+      <button id="toggleSidebar" class="toggle-btn">
+        <span class="line line1"></span>
+        <span class="line line2"></span>
+      </button>
+      <h1>Welcome to the Pharmacy Quiz App</h1>
+    </div>
+    <p>
+      This app is designed to help pharmacy students test their knowledge across several subjects.
+      Use the sidebar on the left to navigate through different subjects and chapters.
+      Each chapter offers quizzes at varying difficulty levels: Easy, Medium, and Hard.
+    </p>
+    <img src="images (2).jpeg" alt="Pharmacy Quiz App Sample Image">
+    <p>
+      Enjoy revising and challenging yourself with our interactive quizzes!
+    </p>
+  </div>
+
+  <script>
+    // Toggle submenu (Chapters) display
+    function toggleSubmenu(button) {
+      var submenu = button.nextElementSibling;
+      submenu.style.display = submenu.style.display === "block" ? "none" : "block";
+    }
+    // Toggle subsubmenu (Quiz Links) display
+    function toggleSubsubmenu(button) {
+      var subsubmenu = button.nextElementSibling;
+      subsubmenu.style.display = subsubmenu.style.display === "block" ? "none" : "block";
+    }
+    // Toggle sidebar for mobile: add/remove "visible" on sidebar and "sidebar-open" on content
+    document.getElementById("toggleSidebar").addEventListener("click", function() {
+      var sidebar = document.getElementById("sidebar");
+      var content = document.getElementById("content");
+      if (sidebar.classList.contains("visible")) {
+        sidebar.classList.remove("visible");
+        content.classList.remove("sidebar-open");
+      } else {
+        sidebar.classList.add("visible");
+        content.classList.add("sidebar-open");
+      }
+    });
+  </script>
+</body>
+</html>

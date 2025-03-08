@@ -1,0 +1,706 @@
+<meta name='viewport' content='width=device-width, initial-scale=1'/>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Introduction to CNP Quiz</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    /* Global Styles */
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f8ff;
+      color: #333;
+      margin: 0;
+      padding: 0;
+      line-height: 1.6;
+      transition: background 0.3s, color 0.3s;
+    }
+    /* Dark Mode Overrides */
+    body.dark-mode {
+      background: #121212;
+      color: #f5f5f5;
+    }
+    body.dark-mode header {
+      background: #263238;
+    }
+    body.dark-mode main {
+      background: #1e1e1e;
+      color: #f5f5f5;
+    }
+    body.dark-mode footer {
+      background: #263238;
+    }
+    /* Header and Navigation */
+    header {
+      background: #00796b;
+      color: #fff;
+      padding: 1em 0;
+      text-align: center;
+      position: relative;
+    }
+    nav ul {
+      list-style: none;
+      padding: 0;
+      text-align: center;
+      margin: 10px 0 0 0;
+    }
+    nav ul li {
+      display: inline-block;
+      margin: 0 15px;
+    }
+    nav ul li a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 1.1em;
+      cursor: pointer;
+    }
+    #toggleMode, #toggleSummary {
+      position: absolute;
+      top: 10px;
+      background: #004d40;
+      color: #fff;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 0.9em;
+    }
+    #toggleMode {
+      right: 10px;
+    }
+    #toggleSummary {
+      right: 120px;
+    }
+    #toggleMode:hover, #toggleSummary:hover {
+      background: #00332e;
+    }
+    /* Main Content */
+    main {
+      max-width: 900px;
+      margin: 20px auto;
+      padding: 20px;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    body.dark-mode main {
+      background: #1e1e1e;
+    }
+    h1, h2 {
+      color: #00796b;
+    }
+    body.dark-mode h1, 
+    body.dark-mode h2 {
+      color: #80cbc4;
+    }
+    footer {
+      text-align: center;
+      padding: 10px;
+      background: #00796b;
+      color: #fff;
+      margin-top: 20px;
+    }
+    /* Quiz Section */
+    .question-container {
+      margin-bottom: 30px;
+    }
+    .question-container h2 {
+      font-size: 1.3em;
+    }
+    .optionBtn {
+      display: block;
+      width: 100%;
+      padding: 12px;
+      margin: 8px 0;
+      border: 2px solid #00796b;
+      border-radius: 5px;
+      background: #fff;
+      font-size: 1em;
+      cursor: pointer;
+      color: #00796b;
+      transition: background 0.3s, color 0.3s;
+    }
+    .optionBtn:hover {
+      background: #e0f2f1;
+    }
+    /* Dark Mode Options */
+    body.dark-mode .optionBtn {
+      background: #333;
+      border: 2px solid #80cbc4;
+      color: #f5f5f5;
+    }
+    body.dark-mode .optionBtn:hover {
+      background: #444;
+    }
+    body.dark-mode .optionBtn.correct {
+      background: #388e3c;
+      border-color: #388e3c;
+      color: #fff;
+    }
+    body.dark-mode .optionBtn.incorrect {
+      background: #d32f2f;
+      border-color: #d32f2f;
+      color: #fff;
+    }
+    .optionBtn.correct {
+      background: #4CAF50;
+      color: #fff;
+      border-color: #4CAF50;
+    }
+    .optionBtn.incorrect {
+      background: #f44336;
+      color: #fff;
+      border-color: #f44336;
+    }
+    #feedback {
+      font-size: 1.1em;
+      margin: 10px 0;
+    }
+    #explanation {
+      background: #e0f7fa;
+      border-left: 5px solid #00796b;
+      padding: 10px;
+      margin: 10px 0;
+      display: none;
+    }
+    body.dark-mode #explanation {
+      background: #37474f;
+      border-left: 5px solid #80cbc4;
+      color: #f5f5f5;
+    }
+    #showExplanation, #nextBtn {
+      padding: 10px 15px;
+      margin: 10px 5px;
+      border: none;
+      border-radius: 5px;
+      background: #00796b;
+      color: #fff;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    #showExplanation:hover, #nextBtn:hover {
+      background: #004d40;
+    }
+    /* Result and Summary Sections */
+    #result-container {
+      text-align: center;
+      margin-top: 30px;
+      padding: 20px;
+      background: #c8e6c9;
+      border-radius: 8px;
+      display: none;
+    }
+    #summary {
+      margin-top: 40px;
+      padding: 20px;
+      background: #f1f8e9;
+      border: 2px solid #8bc34a;
+      border-radius: 8px;
+      display: none;
+    }
+    #summary h2 {
+      color: #33691e;
+    }
+    #summary ul {
+      list-style: disc;
+      padding-left: 20px;
+    }
+    body.dark-mode #summary {
+      background: #263238;
+      border: 2px solid #80cbc4;
+    }
+    body.dark-mode #summary h2 {
+      color: #80cbc4;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Introduction to CNP Quiz</h1>
+    <button id="toggleSummary">Show Summary</button>
+    <button id="toggleMode">Dark Mode</button>
+    <nav>
+      <ul>
+        <li><a href="#quiz-section">Quiz</a></li>
+        <li><a href="#summary" id="summaryLink">Summary</a></li>
+      </ul>
+    </nav>
+  </header>
+  
+  <main>
+    <!-- Quiz Section -->
+    <section id="quiz-section">
+      <div id="quiz-container">
+        <!-- Question will be loaded dynamically -->
+      </div>
+      <div id="feedback"></div>
+      <button id="showExplanation" style="display: none;">Show Explanation</button>
+      <div id="explanation"></div>
+      <button id="nextBtn" style="display: none;">Next</button>
+    </section>
+    
+    <!-- Result Section -->
+    <div id="result-container"></div>
+    
+    <!-- Summary Section (hidden by default) -->
+    <section id="summary">
+      <h2>Summary of Key Concepts in Introduction to CNP</h2>
+      <ul>
+        <li><strong>CNP Definition:</strong> CNP stands for "Chemistry of Natural Products," which deals with the isolation, structure elucidation, and bioactivity of compounds derived from natural sources.</li>
+        <li><strong>Natural Products:</strong> Compounds produced by living organisms with unique chemical diversity, playing key roles in drug discovery.</li>
+        <li><strong>Extraction Methods:</strong> Solvent extraction is the primary technique used to isolate natural products from plant materials.</li>
+        <li><strong>Chromatography:</strong> Essential for separating complex mixtures based on polarity and molecular size.</li>
+        <li><strong>m‑CPBA Usage:</strong> Commonly used as an oxidizing agent in epoxidation and Baeyer–Villiger oxidation reactions.</li>
+        <li><strong>Spectroscopic Techniques:</strong> NMR and MS are vital for structure determination and molecular weight analysis.</li>
+        <li><strong>Metabolites:</strong> Primary metabolites (e.g., amino acids) are essential for cell function, while secondary metabolites serve ecological functions.</li>
+        <li><strong>Biosynthetic Pathways:</strong> Enzyme-mediated reactions that transform primary metabolites into complex structures.</li>
+        <li><strong>SAR and Dereplication:</strong> Critical concepts in natural product research that correlate chemical structure with bioactivity and identify known compounds early.</li>
+      </ul>
+    </section>
+  </main>
+  
+  <footer>
+    <p>&copy; 2025 Introduction to CNP Quiz</p>
+  </footer>
+  
+  <script>
+    // Quiz Data: 30 Detailed Questions on Introduction to CNP with Reordered Options
+    const quizData = [
+      {
+        question: "What does CNP most commonly stand for in a pharmacy/medicinal chemistry context?",
+        options: [
+          { text: "Chemical Nomenclature Principles", correct: false },
+          { text: "Contemporary Nutritional Practices", correct: false },
+          { text: "Chemistry of Natural Products", correct: true },
+          { text: "Clinical Natural Pharmaceuticals", correct: false }
+        ],
+        explanation: "In pharmacy and medicinal chemistry, CNP stands for 'Chemistry of Natural Products'. This field studies compounds isolated from plants, microbes, and marine organisms with unique chemical structures and potential therapeutic properties."
+      },
+      {
+        question: "Which option best defines a 'natural product'?",
+        options: [
+          { text: "A compound exclusively produced by chemical laboratories", correct: false },
+          { text: "A compound synthesized by living organisms", correct: true },
+          { text: "A compound formed only during food processing", correct: false },
+          { text: "A compound resulting solely from industrial processes", correct: false }
+        ],
+        explanation: "Natural products are compounds produced by living organisms as part of their metabolic processes. They exhibit significant structural diversity and are a rich source of bioactive agents."
+      },
+      {
+        question: "One key reason natural products are vital in drug discovery is that they:",
+        options: [
+          { text: "Have no side effects in clinical use", correct: false },
+          { text: "Exhibit unique and diverse chemical structures", correct: true },
+          { text: "Are available in unlimited quantities", correct: false },
+          { text: "Are always easier to synthesize than synthetic compounds", correct: false }
+        ],
+        explanation: "Natural products offer unique chemical structures that interact with biological targets in novel ways, making them invaluable for discovering new therapeutic agents."
+      },
+      {
+        question: "Which extraction method is most frequently used to isolate natural products from plant material?",
+        options: [
+          { text: "Steam distillation", correct: false },
+          { text: "Cold pressing", correct: false },
+          { text: "Sublimation", correct: false },
+          { text: "Solvent extraction", correct: true }
+        ],
+        explanation: "Solvent extraction is widely used for isolating natural products from plants. Organic solvents dissolve the target compounds, which can then be separated and purified."
+      },
+      {
+        question: "What is the primary role of chromatographic techniques in natural product research?",
+        options: [
+          { text: "Complete synthesis of natural products", correct: false },
+          { text: "Immediate structural elucidation of compounds", correct: false },
+          { text: "Separation of compounds based on polarity and molecular size", correct: true },
+          { text: "Direct determination of molecular weight", correct: false }
+        ],
+        explanation: "Chromatography separates complex mixtures into individual components based on differences such as polarity and size. This separation is crucial before further identification and structure analysis."
+      },
+      {
+        question: "Meta‑chloro peroxy benzoic acid (m‑CPBA) is mainly used as:",
+        options: [
+          { text: "A catalyst in polymerization processes", correct: false },
+          { text: "An oxidizing agent in epoxidation reactions", correct: true },
+          { text: "A reducing agent in hydrogenation reactions", correct: false },
+          { text: "A solvent in extraction techniques", correct: false }
+        ],
+        explanation: "m‑CPBA is a common oxidizing agent used to convert alkenes into epoxides, an important reaction in the synthesis of complex natural products."
+      },
+      {
+        question: "The reaction mechanism most commonly associated with m‑CPBA involves:",
+        options: [
+          { text: "A free radical chain reaction", correct: false },
+          { text: "A nucleophilic substitution reaction", correct: false },
+          { text: "A radical polymerization pathway", correct: false },
+          { text: "A concerted electrophilic addition process", correct: true }
+        ],
+        explanation: "The epoxidation mechanism with m‑CPBA is a concerted electrophilic addition, where the peracid transfers an oxygen atom to the alkene in a single step while preserving stereochemistry."
+      },
+      {
+        question: "Which spectroscopic technique is most useful for determining the positions of hydrogen atoms in a natural product?",
+        options: [
+          { text: "Infrared (IR) spectroscopy", correct: false },
+          { text: "Ultraviolet–visible (UV–Vis) spectroscopy", correct: false },
+          { text: "Nuclear Magnetic Resonance (NMR) spectroscopy", correct: true },
+          { text: "Mass spectrometry (MS)", correct: false }
+        ],
+        explanation: "NMR spectroscopy provides detailed insights into hydrogen positions, environments, and interactions in a molecule, making it essential for structural determination."
+      },
+      {
+        question: "In the context of metabolism, which of the following is considered a primary metabolite?",
+        options: [
+          { text: "Alkaloids", correct: false },
+          { text: "Amino acids", correct: true },
+          { text: "Flavonoids", correct: false },
+          { text: "Terpenoids", correct: false }
+        ],
+        explanation: "Primary metabolites are essential for cell function. Amino acids, which are involved in protein synthesis and cellular metabolism, are considered primary metabolites."
+      },
+      {
+        question: "Secondary metabolites, as found in plants, are best described as:",
+        options: [
+          { text: "Compounds produced only under laboratory conditions", correct: false },
+          { text: "Essential molecules for primary cellular functions", correct: false },
+          { text: "Molecules that always exhibit toxic properties", correct: false },
+          { text: "Compounds not directly involved in growth or reproduction", correct: true }
+        ],
+        explanation: "Secondary metabolites are not essential for basic life functions but serve roles in defense and signaling. They often possess bioactive properties useful in drug discovery."
+      },
+      {
+        question: "Biosynthetic pathways in natural product formation are characterized by:",
+        options: [
+          { text: "Random chemical reactions without enzymatic control", correct: false },
+          { text: "Processes that exclusively require synthetic catalysts", correct: false },
+          { text: "Enzyme-mediated conversion of primary metabolites into complex structures", correct: true },
+          { text: "Reactions that occur only under non-physiological conditions", correct: false }
+        ],
+        explanation: "Biosynthetic pathways rely on enzymes to transform simple primary metabolites into more complex natural products. This enzyme-mediated process is highly regulated."
+      },
+      {
+        question: "Which analytical technique is most effective for determining the molecular weight of a natural product?",
+        options: [
+          { text: "Nuclear Magnetic Resonance (NMR) spectroscopy", correct: false },
+          { text: "Infrared (IR) spectroscopy", correct: false },
+          { text: "Ultraviolet–visible (UV–Vis) spectroscopy", correct: false },
+          { text: "Mass spectrometry (MS)", correct: true }
+        ],
+        explanation: "Mass spectrometry determines molecular weight by ionizing compounds and measuring their mass-to-charge ratios, making it essential for confirming a natural product's identity."
+      },
+      {
+        question: "The term 'structure–activity relationship' (SAR) refers to:",
+        options: [
+          { text: "The relationship between extraction methods and yield", correct: false },
+          { text: "The link between plant species and compound solubility", correct: false },
+          { text: "The association of compound color with its reactivity", correct: false },
+          { text: "The correlation between a compound's chemical structure and its biological activity", correct: true }
+        ],
+        explanation: "SAR studies investigate how changes in a compound's chemical structure affect its biological activity, guiding modifications to improve therapeutic efficacy."
+      },
+      {
+        question: "In natural product research, 'dereplication' is the process of:",
+        options: [
+          { text: "Duplicating compounds for increased yield", correct: false },
+          { text: "Rapidly identifying known compounds to avoid re-isolation", correct: true },
+          { text: "Chemically modifying a compound to improve activity", correct: false },
+          { text: "Enhancing compound purity through repeated extraction", correct: false }
+        ],
+        explanation: "Dereplication is used to quickly identify known compounds in an extract so that research efforts can focus on isolating novel substances."
+      },
+      {
+        question: "Which solvent is most appropriate for extracting polar natural products?",
+        options: [
+          { text: "Hexane", correct: false },
+          { text: "Chloroform", correct: false },
+          { text: "Methanol", correct: true },
+          { text: "Diethyl ether", correct: false }
+        ],
+        explanation: "Methanol is a polar solvent that effectively dissolves polar compounds. It is commonly used to extract many bioactive natural products from plants."
+      },
+      {
+        question: "A major advantage of using natural products in medicinal chemistry is their:",
+        options: [
+          { text: "Universally high bioavailability", correct: false },
+          { text: "Ease of synthesis in a laboratory setting", correct: false },
+          { text: "Consistent pharmacokinetic profiles", correct: false },
+          { text: "Structural diversity leading to novel therapeutic agents", correct: true }
+        ],
+        explanation: "Natural products provide a vast array of unique chemical frameworks. This structural diversity is key to discovering new drugs with innovative modes of action."
+      },
+      {
+        question: "In the Baeyer–Villiger oxidation, m‑CPBA functions primarily as:",
+        options: [
+          { text: "A reducing agent to form corresponding alcohols", correct: false },
+          { text: "An oxygen donor to convert ketones into esters or lactones", correct: true },
+          { text: "A reagent for dehydrogenation reactions", correct: false },
+          { text: "A catalyst to initiate polymerization", correct: false }
+        ],
+        explanation: "m‑CPBA acts as an oxygen donor during the Baeyer–Villiger oxidation, converting ketones into esters or lactones--an important reaction in natural product modification."
+      },
+      {
+        question: "The interdisciplinary study of natural products typically integrates which fields?",
+        options: [
+          { text: "Literature, history, and art", correct: false },
+          { text: "Sociology, psychology, and economics", correct: false },
+          { text: "Chemistry, biology, and pharmacology", correct: true },
+          { text: "Physics, mathematics, and astronomy", correct: false }
+        ],
+        explanation: "Research in natural products is interdisciplinary. It requires chemistry for isolation and structure determination, biology for biosynthetic insights, and pharmacology to evaluate therapeutic potential."
+      },
+      {
+        question: "Standardization of natural product extracts in pharmaceuticals is important to:",
+        options: [
+          { text: "Significantly reduce production costs", correct: false },
+          { text: "Increase the diversity of active compounds", correct: false },
+          { text: "Enhance the visual appearance of the extract", correct: false },
+          { text: "Ensure consistent potency and efficacy", correct: true }
+        ],
+        explanation: "Standardization ensures that every batch of a natural product extract contains a consistent level of active ingredients, which is essential for safety and efficacy in pharmaceutical applications."
+      },
+      {
+        question: "When selecting an extraction method for natural products, which factor is most critical?",
+        options: [
+          { text: "The color intensity of the source material", correct: false },
+          { text: "The polarity of the target compounds", correct: true },
+          { text: "The geographical origin of the source", correct: false },
+          { text: "The size of the raw plant material", correct: false }
+        ],
+        explanation: "The polarity of the target compounds determines which solvent is most effective for extraction. Matching solvent polarity with compound polarity is key to achieving high extraction yields."
+      },
+      {
+        question: "Compared with other peracids, m‑CPBA is often preferred because it:",
+        options: [
+          { text: "Requires no specialized storage procedures", correct: false },
+          { text: "Is significantly less expensive", correct: false },
+          { text: "Offers higher selectivity and yields in oxidation reactions", correct: true },
+          { text: "Operates under much milder conditions", correct: false }
+        ],
+        explanation: "m‑CPBA is favored in oxidation reactions for its high selectivity and ability to deliver excellent yields, making it a reliable reagent in natural product synthesis."
+      },
+      {
+        question: "In NMR spectroscopy, the measurement of coupling constants helps determine:",
+        options: [
+          { text: "The molecular weight of the compound", correct: false },
+          { text: "The type of solvent used in extraction", correct: false },
+          { text: "The compound's overall polarity", correct: false },
+          { text: "The spatial relationship between neighboring protons", correct: true }
+        ],
+        explanation: "Coupling constants provide information about the spatial and angular relationships between protons in a molecule. This data is crucial for determining stereochemistry and overall molecular structure."
+      },
+      {
+        question: "Which chromatographic technique is best suited for separating compounds with very similar polarities?",
+        options: [
+          { text: "Gas Chromatography (GC)", correct: false },
+          { text: "High Performance Liquid Chromatography (HPLC)", correct: true },
+          { text: "Paper Chromatography", correct: false },
+          { text: "Thin Layer Chromatography (TLC)", correct: false }
+        ],
+        explanation: "HPLC offers high resolution and precise control over mobile and stationary phases, making it the preferred method for separating compounds with closely related polarities."
+      },
+      {
+        question: "The vivid colors seen in many fruits and flowers are most often attributed to which class of natural products?",
+        options: [
+          { text: "Alkaloids", correct: false },
+          { text: "Terpenoids", correct: false },
+          { text: "Saponins", correct: false },
+          { text: "Flavonoids", correct: true }
+        ],
+        explanation: "Flavonoids are responsible for the bright pigments found in many fruits and flowers. Their antioxidant properties also contribute to the overall bioactivity of natural products."
+      },
+      {
+        question: "In natural product chemistry, 'bioactivity' refers to:",
+        options: [
+          { text: "The process by which a compound is extracted", correct: false },
+          { text: "The effect a compound has on biological systems", correct: true },
+          { text: "The stability of a compound over time", correct: false },
+          { text: "The complexity of a compound's structure", correct: false }
+        ],
+        explanation: "Bioactivity describes how a compound interacts with biological systems, including its therapeutic effects and potential toxicities, which is fundamental for assessing its medicinal value."
+      },
+      {
+        question: "Which of the following factors does NOT usually affect the yield during natural product extraction?",
+        options: [
+          { text: "The solvent chosen for extraction", correct: false },
+          { text: "The extraction temperature", correct: false },
+          { text: "The ambient noise level during extraction", correct: true },
+          { text: "The duration of the extraction process", correct: false }
+        ],
+        explanation: "While many factors (solvent, temperature, and duration) affect extraction yield, ambient noise level has no impact on the chemical process."
+      },
+      {
+        question: "Minimizing degradation during natural product isolation is crucial because:",
+        options: [
+          { text: "It increases the solubility of the compound", correct: false },
+          { text: "It makes the compound more chemically reactive", correct: false },
+          { text: "It facilitates immediate crystallization", correct: false },
+          { text: "It preserves the compound's integrity and bioactivity", correct: true }
+        ],
+        explanation: "Minimizing degradation during isolation is key to maintaining a compound's original chemical structure and bioactivity, ensuring accurate analysis and potential therapeutic use."
+      },
+      {
+        question: "To confirm the structure of a natural product after NMR analysis, which complementary technique is most commonly used?",
+        options: [
+          { text: "Ultraviolet–visible (UV–Vis) spectroscopy", correct: false },
+          { text: "Mass spectrometry (MS)", correct: true },
+          { text: "Polarimetry", correct: false },
+          { text: "Refractometry", correct: false }
+        ],
+        explanation: "Mass spectrometry is often used alongside NMR to verify the molecular weight and support the proposed structure, making it an essential complementary technique in natural product research."
+      },
+      {
+        question: "A common challenge in the study of natural products is:",
+        options: [
+          { text: "The overwhelming abundance of target compounds", correct: false },
+          { text: "The complete lack of detectable bioactivity", correct: false },
+          { text: "The complexity and low concentration of the active compounds", correct: true },
+          { text: "The excessive stability of all isolated compounds", correct: false }
+        ],
+        explanation: "Natural product extracts often contain very low concentrations of bioactive compounds within a complex mixture, which poses significant challenges for isolation and analysis."
+      },
+      {
+        question: "Overall, the importance of natural products in modern pharmacy is best summarized by the fact that they:",
+        options: [
+          { text: "Have been completely replaced by synthetic drugs", correct: false },
+          { text: "Are only of historical interest with no modern applications", correct: false },
+          { text: "Function solely as nutritional supplements without therapeutic benefit", correct: false },
+          { text: "Provide a rich source for new drug leads and therapeutic agents", correct: true }
+        ],
+        explanation: "Natural products remain vital in modern pharmacy as they provide unique chemical structures that serve as leads for the development of innovative drugs."
+      }
+    ];
+    
+    let currentQuestion = 0;
+    let score = 0;
+    let wrongQuestions = [];
+    
+    const quizContainer = document.getElementById('quiz-container');
+    const feedbackDiv = document.getElementById('feedback');
+    const explanationDiv = document.getElementById('explanation');
+    const showExplanationBtn = document.getElementById('showExplanation');
+    const nextBtn = document.getElementById('nextBtn');
+    const resultContainer = document.getElementById('result-container');
+    const summarySection = document.getElementById('summary');
+    const toggleSummaryBtn = document.getElementById('toggleSummary');
+    
+    // Toggle summary section visibility
+    toggleSummaryBtn.addEventListener('click', () => {
+      if (summarySection.style.display === "block") {
+        summarySection.style.display = "none";
+        toggleSummaryBtn.innerText = "Show Summary";
+      } else {
+        summarySection.style.display = "block";
+        toggleSummaryBtn.innerText = "Hide Summary";
+      }
+    });
+    function loadQuestion() {
+      // Clear previous question and feedback
+      feedbackDiv.innerHTML = "";
+      explanationDiv.style.display = "none";
+      showExplanationBtn.style.display = "none";
+      nextBtn.style.display = "none";
+      quizContainer.innerHTML = "";
+      
+      const qData = quizData[currentQuestion];
+      
+      // Create question block
+      const questionBlock = document.createElement('div');
+      questionBlock.className = "question-container";
+      
+      const qTitle = document.createElement('h2');
+      qTitle.innerText = `Question ${currentQuestion + 1}: ${qData.question}`;
+      questionBlock.appendChild(qTitle);
+      
+      // Create options
+      qData.options.forEach((option, index) => {
+        const btn = document.createElement('button');
+        btn.className = "optionBtn";
+        btn.innerText = option.text;
+        btn.onclick = () => selectOption(index, btn);
+        questionBlock.appendChild(btn);
+      });
+      
+      quizContainer.appendChild(questionBlock);
+    }
+    
+    function selectOption(selectedIndex, selectedBtn) {
+      // Disable all option buttons
+      const optionButtons = document.querySelectorAll('.optionBtn');
+      optionButtons.forEach(btn => btn.disabled = true);
+      
+      const qData = quizData[currentQuestion];
+      if(qData.options[selectedIndex].correct) {
+        selectedBtn.classList.add('correct');
+        feedbackDiv.innerHTML = `<p style="color: green;">Correct!</p>`;
+        score++;
+      } else {
+        selectedBtn.classList.add('incorrect');
+        feedbackDiv.innerHTML = `<p style="color: red;">Incorrect!</p>`;
+        // Highlight the correct option
+        optionButtons.forEach(btn => {
+          if(btn.innerText === qData.options.find(opt => opt.correct).text) {
+            btn.classList.add('correct');
+          }
+        });
+        wrongQuestions.push({
+          question: qData.question,
+          explanation: qData.explanation
+        });
+      }
+      showExplanationBtn.style.display = "inline-block";
+      nextBtn.style.display = "inline-block";
+    }
+    
+    showExplanationBtn.addEventListener('click', () => {
+      if(explanationDiv.style.display === "block") {
+        explanationDiv.style.display = "none";
+        showExplanationBtn.innerText = "Show Explanation";
+      } else {
+        explanationDiv.style.display = "block";
+        explanationDiv.innerHTML = `<strong>Detailed Explanation:</strong> ${quizData[currentQuestion].explanation}`;
+        showExplanationBtn.innerText = "Hide Explanation";
+      }
+    });
+    
+    nextBtn.addEventListener('click', () => {
+      currentQuestion++;
+      if(currentQuestion < quizData.length) {
+        loadQuestion();
+      } else {
+        showResults();
+      }
+    });
+    
+    function showResults() {
+      quizContainer.style.display = "none";
+      feedbackDiv.style.display = "none";
+      showExplanationBtn.style.display = "none";
+      nextBtn.style.display = "none";
+      
+      resultContainer.style.display = "block";
+      resultContainer.innerHTML = `<h2>Quiz Completed!</h2><p>Your score: ${score} out of ${quizData.length}</p>`;
+      
+      if(wrongQuestions.length > 0) {
+        resultContainer.innerHTML += `<h3>Review of Incorrect Answers:</h3>`;
+        wrongQuestions.forEach(item => {
+          resultContainer.innerHTML += `<p><strong>Question:</strong> ${item.question}<br><strong>Detailed Explanation:</strong> ${item.explanation}</p><hr>`;
+        });
+      }
+    }
+    
+    // Dark/Light mode toggle functionality
+    const toggleModeBtn = document.getElementById('toggleMode');
+    toggleModeBtn.addEventListener('click', () => {
+      document.body.classList.toggle('dark-mode');
+      if(document.body.classList.contains('dark-mode')) {
+        toggleModeBtn.innerText = "Light Mode";
+      } else {
+        toggleModeBtn.innerText = "Dark Mode";
+      }
+    });
+    
+    // Initialize the Quiz
+    loadQuestion();
+  </script>
+</body>
+</html>

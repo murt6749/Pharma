@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phytochemistry Quiz</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+        
+        :root {
+            --primary: #ff6b35;
+            --secondary: #004e89;
+            --correct: #4CAF50;
+            --incorrect: #f44336;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .quiz-container {
+            max-width: 800px;
+            margin: 20px auto;
+            background: rgba(255, 255, 255, 0.97);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            position: relative;
+        }
+
+        .question {
+            display: none;
+            margin-bottom: 30px;
+            animation: questionAppear 0.6s forwards;
+        }
+
+        @keyframes questionAppear {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .question.active { display: block; }
+
+        h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+            line-height: 1.5;
+        }
+
+        .option {
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid #eee;
+            position: relative;
+            overflow: hidden;
+            font-size: 1rem;
+            background: #fff;
+        }
+
+        .option.correct {
+            background: #e8f5e9;
+            border-color: var(--correct);
+            animation: correctShine 0.6s;
+        }
+
+        .option.incorrect {
+            background: #ffebee;
+            border-color: var(--incorrect);
+            animation: incorrectShake 0.4s;
+        }
+
+        @keyframes correctShine {
+            0% { background-position: -100px; }
+            100% { background-position: 200px; }
+        }
+
+        @keyframes incorrectShake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .score-header {
+            position: absolute;
+            top: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #fff;
+            padding: 10px 30px;
+            border-radius: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            font-weight: 600;
+            color: var(--secondary);
+            font-size: 1.1rem;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            gap: 10px;
+        }
+
+        button {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: var(--secondary);
+            color: white;
+            font-size: 1rem;
+            flex: 1;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .explanation {
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.5s ease;
+            margin-top: 15px;
+            padding-left: 15px;
+            border-left: 3px solid var(--primary);
+            background: #f8f9fa;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #444;
+        }
+
+        .explanation.active {
+            max-height: 500px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .summary-menu {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .summary-content {
+            display: none;
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            max-width: 300px;
+            font-size: 0.9rem;
+        }
+
+        .progress-bar {
+            height: 4px;
+            background: #eee;
+            margin-bottom: 20px;
+        }
+
+        .progress {
+            height: 100%;
+            background: var(--primary);
+            transition: width 0.5s;
+        }
+
+        .score-screen {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, #ff6b35 0%, #ff8c42 100%);
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            color: white;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+            width: 90%;
+            max-width: 500px;
+            animation: scoreSplash 1s forwards;
+            z-index: 1001;
+        }
+
+        @keyframes scoreSplash {
+            0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+            80% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
+            100% { transform: translate(-50%, -50%) scale(1); }
+        }
+
+        .score-number {
+            font-size: 4rem;
+            font-weight: 700;
+            margin: 20px 0;
+            text-shadow: 0 3px 10px rgba(0,0,0,0.2);
+        }
+
+        .review-section {
+            text-align: left;
+            margin-top: 30px;
+            max-height: 60vh;
+            overflow-y: auto;
+            padding-right: 15px;
+        }
+
+        .incorrect-question {
+            background: rgba(255,255,255,0.9);
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 10px;
+            color: #333;
+        }
+
+        @media (max-width: 768px) {
+            .quiz-container {
+                padding: 20px;
+                margin-top: 40px;
+            }
+
+            .score-header {
+                top: -30px;
+                padding: 8px 20px;
+                font-size: 1rem;
+            }
+
+            h2 {
+                font-size: 1.1rem;
+            }
+
+            .option {
+                padding: 12px;
+                font-size: 0.95rem;
+            }
+
+            button {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+
+            .score-screen {
+                padding: 25px;
+            }
+
+            .score-number {
+                font-size: 3rem;
+            }
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+    <div class="summary-menu">
+        <button onclick="toggleSummary()">📚 Summary</button>
+        <div class="summary-content" id="summaryBox">
+            <h3>Quiz Summary</h3>
+            <p>Concepts Covered:</p>
+            <ul>
+                <li>Plant Secondary Metabolites</li>
+                <li>Pharmaceutical Compounds</li>
+                <li>Biochemical Pathways</li>
+                <li>Plant Defense Mechanisms</li>
+                <li>Metabolic Relationships</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="quiz-container">
+        <div class="score-header" id="scoreHeader">Score: 0 / 0 (0%)</div>
+        <div class="progress-bar">
+            <div class="progress" id="progress"></div>
+        </div>
+        <div id="questionsContainer"></div>
+    </div>
+
+    <div class="overlay" id="overlay"></div>
+    <div class="score-screen" id="scoreScreen">
+        <h2>Quiz Completed! 🎉</h2>
+        <div class="score-number" id="finalScore">0 / 0 (0%)</div>
+        <div class="review-section" id="reviewSection"></div>
+        <button onclick="restartQuiz()" style="margin-top: 20px;">Try Again</button>
+    </div>
+
+    <script>
+        // Complete question array with all 32 questions and detailed explanations
+        const questions = [
+            {
+                q: "Which plant is associated with the secondary metabolite Scopolamine, known for easing motion sickness?",
+                options: [
+                    "Taxus brevifolia",
+                    "Datura stramonium",
+                    "Papaver somniferum",
+                    "Cinchona pubescens"
+                ],
+                correct: 1,
+                explanation: "Datura stramonium, commonly known as Jimson weed, is a well-known source of the alkaloid scopolamine. This compound acts as an anticholinergic agent by blocking acetylcholine receptors in the nervous system, thereby reducing nausea and preventing motion sickness."
+            },
+            {
+                q: "Taxol, an anticancer drug, is derived from which plant?",
+                options: [
+                    "Catharanthus roseus",
+                    "Ephedra sinica",
+                    "Taxus brevifolia",
+                    "Filipendula ulmaria"
+                ],
+                correct: 2,
+                explanation: "Taxus brevifolia, also known as the Pacific yew tree, produces Taxol—a complex diterpenoid compound. Taxol stabilizes microtubules and prevents their disassembly, which in turn inhibits cell division in cancer cells, making it an important chemotherapeutic agent."
+            },
+            {
+                q: "Aspirin, used for reducing pain and inflammation, is associated with which plant source?",
+                options: [
+                    "Cinchona pubescens",
+                    "Filipendula ulmaria",
+                    "Datura stramonium",
+                    "Ephedra sinica"
+                ],
+                correct: 1,
+                explanation: "Filipendula ulmaria, commonly known as meadowsweet, contains natural salicylic acid derivatives. These compounds were historically used for pain relief and inflammation control, serving as the foundation for the development of modern aspirin."
+            },
+            {
+                q: "Morphine and Codeine, secondary metabolites used to ease pain and suppress coughing, are obtained from:",
+                options: [
+                    "Catharanthus roseus",
+                    "Papaver somniferum",
+                    "Taxus brevifolia",
+                    "Datura stramonium"
+                ],
+                correct: 1,
+                explanation: "Papaver somniferum, the opium poppy, is the source of opiate alkaloids such as morphine and codeine. These compounds are extracted from the poppy’s latex and have powerful analgesic and antitussive effects, making them central to pain management and cough suppression."
+            },
+            {
+                q: "Pseudoephedrine, used to reduce nasal congestion, is derived from which plant?",
+                options: [
+                    "Filipendula ulmaria",
+                    "Papaver somniferum",
+                    "Ephedra sinica",
+                    "Catharanthus roseus"
+                ],
+                correct: 2,
+                explanation: "Ephedra sinica, also known as Ma Huang, produces pseudoephedrine—a compound that acts as a decongestant. Pseudoephedrine works by constricting blood vessels in the nasal passages, thereby reducing swelling and alleviating congestion."
+            },
+            {
+                q: "Quinine, an anti-malarial drug, is extracted from:",
+                options: [
+                    "Taxus brevifolia",
+                    "Cinchona pubescens",
+                    "Ephedra sinica",
+                    "Filipendula ulmaria"
+                ],
+                correct: 1,
+                explanation: "Cinchona pubescens, one of the species in the Cinchona genus, is the natural source of quinine. Quinine interferes with the growth cycle of the malaria parasite, and its discovery was crucial in the fight against malaria."
+            },
+            {
+                q: "Vinblastine, an anti-cancer drug, is obtained from which plant?",
+                options: [
+                    "Papaver somniferum",
+                    "Taxus brevifolia",
+                    "Catharanthus roseus",
+                    "Datura stramonium"
+                ],
+                correct: 2,
+                explanation: "Catharanthus roseus, commonly known as the Madagascar periwinkle, produces the vinca alkaloid vinblastine. Vinblastine works by disrupting microtubule formation during cell division, which is why it is used as a chemotherapeutic agent in cancer treatment."
+            },
+            {
+                q: "What is the primary reason plants produce secondary metabolites?",
+                options: [
+                    "To attract pollinators",
+                    "To enhance their growth rate",
+                    "For defense against threats like microbes, viruses, and herbivores",
+                    "To improve photosynthesis"
+                ],
+                correct: 2,
+                explanation: "Plants synthesize secondary metabolites mainly as a defense mechanism. These compounds help protect the plant from pathogens, herbivores, and environmental stresses. While some secondary metabolites have additional roles (such as attracting pollinators), their primary function is protective."
+            },
+            {
+                q: "To protect themselves from predators and parasites, what do plants produce as a defense mechanism?",
+                options: [
+                    "Sunlight blockers",
+                    "Repellents and antimicrobial compounds",
+                    "Water-retention substances",
+                    "Heat-resistant proteins"
+                ],
+                correct: 1,
+                explanation: "Plants produce a variety of chemical defenses such as repellents and antimicrobial compounds. These substances help deter predators and inhibit the growth of parasites and pathogens, thereby enhancing the plant’s survival in its environment."
+            },
+            {
+                q: "What triggers the production of phytoalexins in plants?",
+                options: [
+                    "High levels of sunlight",
+                    "Fungal attacks or stress",
+                    "Nutrient deficiency",
+                    "Herbivore grazing"
+                ],
+                correct: 1,
+                explanation: "Phytoalexins are antimicrobial compounds produced by plants in response to stress, particularly when under attack by fungi or other pathogens. Their synthesis is an important part of the plant's innate immune response."
+            },
+            {
+                q: "What is the functional role of phytoalexins in plants?",
+                options: [
+                    "Plant hormones",
+                    "Natural defense against fungi",
+                    "Insect repellents",
+                    "Growth promoters"
+                ],
+                correct: 1,
+                explanation: "The primary function of phytoalexins is to serve as a natural defense mechanism. When a plant is invaded by pathogens—especially fungi—it synthesizes these compounds rapidly at the site of infection to inhibit pathogen growth and limit damage."
+            },
+            {
+                q: "Rishitin, a known example, is a type of phytoalexin produced by which common food crop?",
+                options: [
+                    "Wheat",
+                    "Rice",
+                    "Potato",
+                    "Maize"
+                ],
+                correct: 2,
+                explanation: "Rishitin is a phytoalexin produced by potato plants. In response to stress or pathogen attack, potatoes synthesize rishitin to help protect the tissues from infection and support the plant’s defense system."
+            },
+            {
+                q: "Which of the following is identified as a building block in the biosynthesis of secondary metabolites?",
+                options: [
+                    "Citric acid",
+                    "Lactic acid",
+                    "Acetyl coenzyme A (acetyl-CoA)",
+                    "Hydrochloric acid"
+                ],
+                correct: 2,
+                explanation: "Acetyl coenzyme A (acetyl-CoA) is a central intermediate in cellular metabolism and serves as a building block for the biosynthesis of many secondary metabolites. It provides the necessary acetyl groups used to construct complex organic molecules."
+            },
+            {
+                q: "Shikimic acid is best described as:",
+                options: [
+                    "A final secondary metabolite",
+                    "An enzyme involved in metabolism",
+                    "An intermediate building block for secondary metabolites",
+                    "A storage molecule in plants"
+                ],
+                correct: 2,
+                explanation: "Shikimic acid is an important intermediate in the biosynthetic pathway that leads to the production of aromatic amino acids and various secondary metabolites. It is a precursor molecule rather than an end product."
+            },
+            {
+                q: "Mevalonic acid is crucial as a precursor in the synthesis of:",
+                options: [
+                    "Primary metabolites like glucose",
+                    "Secondary metabolites using specific pathways",
+                    "Plant cell wall components",
+                    "Proteins within the plant cell"
+                ],
+                correct: 1,
+                explanation: "Mevalonic acid is a key precursor in the synthesis of terpenoids—a large class of secondary metabolites. These compounds are involved in plant defense, growth regulation, and signaling, highlighting the importance of mevalonic acid in secondary metabolism."
+            },
+            {
+                q: "What is the origin of the most important building blocks used in secondary metabolite biosynthesis?",
+                options: [
+                    "Directly from soil nutrients",
+                    "From atmospheric carbon dioxide",
+                    "From intermediate compounds in metabolism",
+                    "From genetic material itself"
+                ],
+                correct: 2,
+                explanation: "The essential building blocks for secondary metabolite synthesis come from intermediate compounds produced during primary metabolism. Molecules like acetyl-CoA, shikimic acid, and mevalonic acid originate from the core metabolic pathways that generate energy and simple organic compounds."
+            },
+            {
+                q: "Acetyl-CoA, shikimic acid, and mevalonic acid share a common role as:",
+                options: [
+                    "Energy storage molecules",
+                    "Structural components of cells",
+                    "Key intermediates for building secondary metabolites",
+                    "Waste products of metabolism"
+                ],
+                correct: 2,
+                explanation: "Acetyl-CoA, shikimic acid, and mevalonic acid serve as crucial intermediates that link primary metabolism to the biosynthesis of secondary metabolites. They provide the chemical building blocks required to construct a wide variety of bioactive compounds."
+            },
+            {
+                q: "What is the primary function of ATP (Adenosine Triphosphate) as described in the context of chemical reactions?",
+                options: [
+                    "To act as a catalyst",
+                    "To lower the activation energy of reactions",
+                    "To activate thermodynamically unfavorable chemical reactions",
+                    "To serve as a reducing agent"
+                ],
+                correct: 2,
+                explanation: "ATP is the energy currency of the cell. In biochemical reactions, it provides the energy needed to overcome activation energy barriers, thereby enabling thermodynamically unfavorable reactions to proceed."
+            },
+            {
+                q: "A chemical reaction that is 'thermodynamically unfavorable' is best described as a reaction that:",
+                options: [
+                    "Occurs spontaneously and releases energy",
+                    "Requires an input of energy to proceed",
+                    "Proceeds very rapidly",
+                    "Is catalyzed by enzymes"
+                ],
+                correct: 1,
+                explanation: "A thermodynamically unfavorable reaction requires an input of energy to proceed because it does not occur spontaneously. The need for added energy is due to the reaction's high activation energy barrier."
+            },
+            {
+                q: "The example reaction R-OH → R-Nuc + :OH, described as 'thermodynamically unfavorable,' is also characterized as:",
+                options: [
+                    "Exothermic",
+                    "Endothermic",
+                    "Catalytic",
+                    "Spontaneous"
+                ],
+                correct: 1,
+                explanation: "The reaction R-OH → R-Nuc + :OH is characterized as endothermic because it absorbs energy from its surroundings. This energy uptake makes the reaction thermodynamically unfavorable under standard conditions."
+            },
+            {
+                q: "In in vitro conditions (in a test tube), the carbinol carbon of an alcohol is described as:",
+                options: [
+                    "Nucleophilic",
+                    "Hydrophobic",
+                    "Electrophilic",
+                    "A poor reactant"
+                ],
+                correct: 2,
+                explanation: "Under in vitro conditions, the carbinol carbon in an alcohol is influenced by the electronegative oxygen, which draws electron density away and makes the carbon electrophilic—thereby susceptible to attack by nucleophiles."
+            },
+            {
+                q: "In the context of reactions involving alcohols in in vitro settings, the hydroxide ion (OH-) is characterized as:",
+                options: [
+                    "An excellent leaving group",
+                    "A strong nucleophile",
+                    "A poor leaving group",
+                    "An effective catalyst"
+                ],
+                correct: 1,
+                explanation: "Although the hydroxide ion (OH-) is a strong nucleophile, its performance in reactions is often limited by its poor leaving group ability. This factor can impede reaction progress under certain in vitro conditions."
+            },
+            {
+                q: "The genera Chrysanthemum and Pyrethrum, belonging to the Compositae family, are known for exclusively synthesizing which type of compound?",
+                options: [
+                    "Alkaloids",
+                    "Terpenoids",
+                    "Pyrethrins",
+                    "Flavonoids"
+                ],
+                correct: 2,
+                explanation: "Chrysanthemum and Pyrethrum synthesize pyrethrins—natural insecticidal compounds that are effective in repelling and killing insects while being safe for mammals. Their unique synthesis of pyrethrins makes them valuable in natural pest control."
+            },
+            {
+                q: "Disparlure is mentioned in the context of:",
+                options: [
+                    "Plant defense mechanisms",
+                    "Chemical communication through sexual pheromones",
+                    "Fungal growth regulation in plants",
+                    "Attracting pollinators to flowers"
+                ],
+                correct: 1,
+                explanation: "Disparlure is a pheromone used primarily for sexual communication among insects. Its role is to attract mates rather than to serve as a defense mechanism, which distinguishes it from compounds produced by plants for protection."
+            },
+            {
+                q: "What is the primary function of hormones, as described in the context of chemical products?",
+                options: [
+                    "To induce a specific behavior in other species",
+                    "To transfer information between different organisms",
+                    "To transfer information between tissues or organs within the same organism to coordinate activity",
+                    "To have a negative effect on another organism as a defense mechanism"
+                ],
+                correct: 2,
+                explanation: "Hormones are chemical messengers that enable internal communication between tissues and organs. They regulate vital physiological processes such as growth, metabolism, and stress responses by transmitting signals within the organism."
+            },
+            {
+                q: "Pheromones are chemical products primarily used for:",
+                options: [
+                    "Internal communication within an organism's body",
+                    "Communication between individuals of the same species to induce a specific behavior",
+                    "Defense against predators from different species",
+                    "Attracting pollinators for reproduction"
+                ],
+                correct: 1,
+                explanation: "Pheromones are released by an organism to communicate with other members of the same species. They can convey information related to reproductive status, territorial boundaries, or alert signals, playing a key role in social and reproductive behaviors."
+            },
+            {
+                q: "Allomones are defined as chemical products that, when released by one organism, have what kind of effect on another organism?",
+                options: [
+                    "A positive or beneficial effect",
+                    "No significant effect",
+                    "A negative effect, serving as a chemical defense",
+                    "An attractive effect, drawing them closer"
+                ],
+                correct: 2,
+                explanation: "Allomones are chemicals released by one species that negatively affect another species. They serve as a defensive mechanism by deterring predators or competitors, thus providing an adaptive advantage to the producing organism."
+            },
+            {
+                q: "What is the fundamental role of photosynthesis, glycolysis, and the Krebs cycle in relation to plant metabolism?",
+                options: [
+                    "They directly produce secondary metabolites for plant defense",
+                    "They represent the core energy-generating and building block-producing processes in plants",
+                    "They are only involved in breaking down complex molecules for energy storage",
+                    "They primarily function in attracting pollinators and seed dispersal"
+                ],
+                correct: 1,
+                explanation: "Photosynthesis, glycolysis, and the Krebs cycle are the central processes that generate energy and produce essential intermediates in plants. These intermediates are not only vital for growth but also serve as the building blocks for synthesizing complex secondary metabolites."
+            },
+            {
+                q: "In plant metabolism, where does the initial source of carbon and energy typically originate for building more complex molecules?",
+                options: [
+                    "From nitrogen absorbed from the soil",
+                    "From pre-existing secondary metabolites",
+                    "From carbon dioxide and water through photosynthesis",
+                    "From the breakdown of stored fats and oils"
+                ],
+                correct: 2,
+                explanation: "The fundamental source of carbon and energy in plants comes from photosynthesis, which converts carbon dioxide and water into sugars. These sugars then serve as both energy sources and building blocks for more complex molecules."
+            },
+            {
+                q: "If a plant cell is synthesizing complex secondary metabolites like alkaloids or flavonoids, where do the necessary precursor molecules fundamentally come from?",
+                options: [
+                    "They are directly absorbed from the soil as secondary metabolite precursors",
+                    "They are synthesized de novo from inorganic elements, independent of other metabolic processes",
+                    "They are derived as intermediates or byproducts of core primary metabolic pathways",
+                    "They are imported from other parts of the plant that specialize in secondary metabolite production"
+                ],
+                correct: 2,
+                explanation: "The precursor molecules for complex secondary metabolites are usually derived from intermediates of primary metabolism. These intermediates provide the carbon skeletons and energy needed to synthesize the diverse range of specialized compounds found in plants."
+            },
+            {
+                q: "Acetyl coenzyme A (Acetyl-CoA) is a central molecule in metabolism. What general role does it play in the context of both primary and secondary metabolite production, based on the metabolic relationships implied?",
+                options: [
+                    "It is mainly a waste product of energy generation and is not utilized for biosynthesis",
+                    "It serves exclusively as an energy carrier and has no role in building molecules",
+                    "It acts as a crucial intermediate, linking energy-generating pathways to the biosynthesis of various molecules, including certain secondary metabolites",
+                    "It is primarily involved in breaking down secondary metabolites, not in their creation"
+                ],
+                correct: 2,
+                explanation: "Acetyl-CoA is a key metabolic intermediate that connects energy production with the biosynthesis of both primary and secondary metabolites. It supplies acetyl groups required for constructing a wide variety of biomolecules, making it essential for cellular metabolism."
+            },
+            {
+                q: "Considering the relationship between primary and secondary metabolism in plants, which statement best describes the flow of metabolic processes?",
+                options: [
+                    "Secondary metabolism fuels primary metabolism, providing it with energy and basic building blocks",
+                    "Primary metabolism provides the essential foundations and intermediates that are then utilized to construct diverse secondary metabolites",
+                    "Primary and secondary metabolism operate completely independently of each other with no shared molecules or pathways",
+                    "Secondary metabolites are produced first, and then broken down to fuel primary metabolic processes if needed"
+                ],
+                correct: 1,
+                explanation: "Primary metabolism generates the energy and fundamental intermediates needed for all cellular functions. These intermediates are then channeled into secondary metabolic pathways to produce specialized compounds. This interdependency underlines the flow from primary to secondary metabolism in plants."
+            }
+        ];
+
+        let currentQ = 0;
+        let score = 0;
+        const totalQ = questions.length;
+
+        function initializeQuiz() {
+            const container = document.getElementById('questionsContainer');
+            questions.forEach((q, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'question';
+                questionDiv.setAttribute('data-qnum', index+1);
+                
+                let optionsHTML = q.options.map((opt, i) => 
+                    `<div class="option" onclick="checkAnswer(${index}, ${i})">${String.fromCharCode(65+i)}) ${opt}</div>`
+                ).join('');
+                
+                questionDiv.innerHTML = `
+                    <h2>${q.q}</h2>
+                    ${optionsHTML}
+                    <div class="explanation">${q.explanation}</div>
+                    <div class="nav-buttons">
+                        ${index > 0 ? '<button onclick="prevQuestion()">Previous</button>' : '<div></div>'}
+                        ${index < totalQ-1 ? '<button onclick="nextQuestion()">Next</button>' : '<button onclick="showResults()">Finish</button>'}
+                    </div>
+                `;
+                container.appendChild(questionDiv);
+            });
+            showQuestion(0);
+        }
+
+        function checkAnswer(qIndex, optIndex) {
+            const questionDiv = document.querySelector(`[data-qnum="${qIndex+1}"]`);
+            const options = questionDiv.querySelectorAll('.option');
+            const correct = questions[qIndex].correct;
+            
+            options.forEach((opt, i) => {
+                opt.classList.remove('correct', 'incorrect');
+                if(i === correct) opt.classList.add('correct');
+                if(i === optIndex && i !== correct) opt.classList.add('incorrect');
+            });
+
+            if(optIndex === correct && !questions[qIndex].answered) {
+                score++;
+                updateScore();
+            }
+            
+            questions[qIndex].answered = true;
+            questionDiv.querySelector('.explanation').classList.add('active');
+        }
+
+        function updateScore() {
+            const scorePercent = Math.round((score / totalQ) * 100);
+            document.getElementById('scoreHeader').textContent = `Score: ${score} / ${totalQ} (${scorePercent}%)`;
+            document.getElementById('progress').style.width = `${((currentQ+1)/totalQ)*100}%`;
+        }
+
+        function showQuestion(index) {
+            document.querySelectorAll('.question').forEach(q => q.classList.remove('active'));
+            document.querySelector(`[data-qnum="${index+1}"]`).classList.add('active');
+            currentQ = index;
+            updateScore();
+        }
+
+        function nextQuestion() { if(currentQ < totalQ-1) showQuestion(currentQ+1); }
+        function prevQuestion() { if(currentQ > 0) showQuestion(currentQ-1); }
+
+        function toggleSummary() {
+            document.getElementById('summaryBox').style.display = 
+                document.getElementById('summaryBox').style.display === 'block' ? 'none' : 'block';
+        }
+
+        function showResults() {
+            document.getElementById('overlay').style.display = 'block';
+            document.getElementById('scoreScreen').style.display = 'block';
+            const scorePercent = Math.round((score / totalQ) * 100);
+            document.getElementById('finalScore').textContent = `${score} / ${totalQ} (${scorePercent}%)`;
+            
+            let reviewHTML = '';
+            questions.forEach((q, index) => {
+                if(!q.answered || q.answered !== q.correct) {
+                    reviewHTML += `
+                        <div class="incorrect-question">
+                            <h4>Question ${index+1}:</h4>
+                            <p>${q.q}</p>
+                            <p>Correct Answer: ${String.fromCharCode(65+q.correct)}) ${q.options[q.correct]}</p>
+                            <p>Explanation: ${q.explanation}</p>
+                        </div>
+                    `;
+                }
+            });
+            document.getElementById('reviewSection').innerHTML = reviewHTML;
+        }
+
+        function restartQuiz() {
+            currentQ = 0;
+            score = 0;
+            questions.forEach(q => delete q.answered);
+            document.getElementById('overlay').style.display = 'none';
+            document.getElementById('scoreScreen').style.display = 'none';
+            document.querySelectorAll('.question').forEach(q => q.classList.remove('active'));
+            document.querySelectorAll('.explanation').forEach(e => e.classList.remove('active'));
+            document.getElementById('progress').style.width = '0%';
+            showQuestion(0);
+            updateScore();
+        }
+
+        window.onload = initializeQuiz;
+    </script>
+</body>
+</html>

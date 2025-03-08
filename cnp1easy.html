@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Natural Products Quiz</title>
+  <style>
+    :root {
+      --bg-color: #ffffff;
+      --text-color: #2c3e50;
+      --primary: #3498db;
+      --success: #2ecc71;
+      --danger: #e74c3c;
+      --transition-duration: 0.5s;
+    }
+    .dark-mode {
+      --bg-color: #2c3e50;
+      --text-color: #ecf0f1;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      transition: background-color var(--transition-duration), color var(--transition-duration);
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .question-page {
+      display: none;
+      /* Initially hide all pages; the active page will be set to display:block */
+    }
+    .question-card {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 15px;
+      padding: 2rem;
+      margin: 1rem auto;
+      max-width: 800px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      position: relative;
+    }
+    .options-container {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin: 1rem 0;
+    }
+    .option {
+      padding: 1rem;
+      border: 2px solid var(--primary);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: transform var(--transition-duration);
+      position: relative;
+    }
+    .option.correct {
+      background: var(--success) !important;
+      border-color: #27ae60 !important;
+    }
+    .option.incorrect {
+      background: var(--danger) !important;
+      border-color: #c0392b !important;
+    }
+    .feedback-icon {
+      font-weight: bold;
+      font-size: 1.2em;
+      margin-left: 10px;
+    }
+    .explanation {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height var(--transition-duration) ease-out, padding var(--transition-duration);
+      margin-top: 1rem;
+      background: rgba(0, 0, 0, 0.05);
+      border-radius: 8px;
+      padding: 0 1rem;
+    }
+    .explanation.visible {
+      max-height: 500px;
+      padding: 1rem;
+    }
+    .nav-buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 1rem;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    button {
+      padding: 0.8rem 1.5rem;
+      border: none;
+      border-radius: 5px;
+      background: var(--primary);
+      color: white;
+      cursor: pointer;
+      transition: transform var(--transition-duration), opacity var(--transition-duration);
+    }
+    button:hover {
+      opacity: 0.9;
+      transform: scale(1.05);
+    }
+    .score-box {
+      border: 2px solid var(--primary);
+      padding: 20px;
+      margin: 20px auto;
+      border-radius: 10px;
+      text-align: center;
+      max-width: 500px;
+    }
+    /* Slide animations */
+    @keyframes slideInRight {
+      from { transform: translateX(100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+    @keyframes slideOutLeft {
+      from { transform: translateX(0); opacity: 1; }
+      to { transform: translateX(-100%); opacity: 0; }
+    }
+    @keyframes slideInLeft {
+      from { transform: translateX(-100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+    @keyframes slideOutRight {
+      from { transform: translateX(0); opacity: 1; }
+      to { transform: translateX(100%); opacity: 0; }
+    }
+    .slide-in-right {
+      animation: slideInRight var(--transition-duration) forwards;
+    }
+    .slide-out-left {
+      animation: slideOutLeft var(--transition-duration) forwards;
+    }
+    .slide-in-left {
+      animation: slideInLeft var(--transition-duration) forwards;
+    }
+    .slide-out-right {
+      animation: slideOutRight var(--transition-duration) forwards;
+    }
+  </style>
+</head>
+<body>
+  <h1>Natural Products Quiz</h1>
+  
+  <!-- Quiz Container -->
+  <div id="quiz-container">
+    <!-- QUESTION 1 -->
+    <div class="question-page" id="q1" style="display: block;">
+      <div class="question-card">
+        <h3>1. Within natural product chemistry, which criterion primarily distinguishes a natural product from a synthetic compound?</h3>
+        <div class="options-container">
+          <div class="option" onclick="selectAnswer(0, 0)">a) Structural complexity</div>
+          <div class="option" onclick="selectAnswer(0, 1)">b) Pharmacological properties</div>
+          <div class="option" onclick="selectAnswer(0, 2)">c) Origin from a living source</div>
+          <div class="option" onclick="selectAnswer(0, 3)">d) Application in medicine</div>
+        </div>
+        <button onclick="toggleExplanation(0)">Show Explanation</button>
+        <div class="explanation" id="exp0">
+          <p><strong>Detailed Explanation:</strong> Natural products are defined by their biological origin. Although many possess complex structures and useful pharmacological effects, the key distinction is that they are derived from living organisms.</p>
+        </div>
+      </div>
+      <div class="nav-buttons">
+        <button disabled>Previous</button>
+        <button onclick="nextQuestion()">Next</button>
+      </div>
+    </div>
+    
+    <!-- QUESTION 2 -->
+    <div class="question-page" id="q2" style="display: none;">
+      <div class="question-card">
+        <h3>2. A compound critical for a plant's basic metabolic functions is most accurately classified as:</h3>
+        <div class="options-container">
+          <div class="option" onclick="selectAnswer(1, 0)">a) A secondary metabolite</div>
+          <div class="option" onclick="selectAnswer(1, 1)">b) A primary metabolite</div>
+          <div class="option" onclick="selectAnswer(1, 2)">c) An alkaloid</div>
+          <div class="option" onclick="selectAnswer(1, 3)">d) A terpenoid</div>
+        </div>
+        <button onclick="toggleExplanation(1)">Show Explanation</button>
+        <div class="explanation" id="exp1">
+          <p><strong>Detailed Explanation:</strong> Primary metabolites are essential for life, while secondary metabolites serve specialized functions such as defense or signaling.</p>
+        </div>
+      </div>
+      <div class="nav-buttons">
+        <button onclick="prevQuestion()">Previous</button>
+        <button onclick="nextQuestion()">Next</button>
+      </div>
+    </div>
+    
+    <!-- QUESTION 3 -->
+    <div class="question-page" id="q3" style="display: none;">
+      <div class="question-card">
+        <h3>3. When exploring metabolic pathways in natural product research, the main objective is to:</h3>
+        <div class="options-container">
+          <div class="option" onclick="selectAnswer(2, 0)">a) Identify new species</div>
+          <div class="option" onclick="selectAnswer(2, 1)">b) Decipher chemical processes</div>
+          <div class="option" onclick="selectAnswer(2, 2)">c) Develop pharmaceutical drugs</div>
+          <div class="option" onclick="selectAnswer(2, 3)">d) Enhance photosynthetic efficiency</div>
+        </div>
+        <button onclick="toggleExplanation(2)">Show Explanation</button>
+        <div class="explanation" id="exp2">
+          <p><strong>Detailed Explanation:</strong> The aim is to understand the series of chemical reactions within organisms, which can lead to insights for drug discovery and other applications.</p>
+        </div>
+      </div>
+      <div class="nav-buttons">
+        <button onclick="prevQuestion()">Previous</button>
+        <button onclick="nextQuestion()">Next</button>
+      </div>
+    </div>
+    
+    <!-- QUESTION 4 -->
+    <div class="question-page" id="q4" style="display: none;">
+      <div class="question-card">
+        <h3>4. What is a fundamental difference in chemical synthesis between plant and animal metabolism?</h3>
+        <div class="options-container">
+          <div class="option" onclick="selectAnswer(3, 0)">a) Plants harness sunlight via photosynthesis</div>
+          <div class="option" onclick="selectAnswer(3, 1)">b) Animals produce a greater range of toxins</div>
+          <div class="option" onclick="selectAnswer(3, 2)">c) Plants utilize more complex enzyme systems</div>
+          <div class="option" onclick="selectAnswer(3, 3)">d) Animals do not synthesize chemicals</div>
+        </div>
+        <button onclick="toggleExplanation(3)">Show Explanation</button>
+        <div class="explanation" id="exp3">
+          <p><strong>Detailed Explanation:</strong> Plants use photosynthesis to produce energy and build complex molecules--a process not found in animals.</p>
+        </div>
+      </div>
+      <div class="nav-buttons">
+        <button onclick="prevQuestion()">Previous</button>
+        <button onclick="nextQuestion()">Next</button>
+      </div>
+    </div>
+    
+    <!-- QUESTION 5 -->
+    <div class="question-page" id="q5" style="display: none;">
+      <div class="question-card">
+        <h3>5. Why is the investigation of natural products significant for medicine?</h3>
+        <div class="options-container">
+          <div class="option" onclick="selectAnswer(4, 0)">a) To discover new elements</div>
+          <div class="option" onclick="selectAnswer(4, 1)">b) To identify promising drug leads</div>
+          <div class="option" onclick="selectAnswer(4, 2)">c) To understand plant diseases</div>
+          <div class="option" onclick="selectAnswer(4, 3)">d) To design synthetic polymers</div>
+        </div>
+        <button onclick="toggleExplanation(4)">Show Explanation</button>
+        <div class="explanation" id="exp4">
+          <p><strong>Detailed Explanation:</strong> Natural products provide a rich source of unique compounds that can be optimized for therapeutic use.</p>
+        </div>
+      </div>
+      <div class="nav-buttons">
+        <button onclick="prevQuestion()">Previous</button>
+        <button onclick="nextQuestion()">Next</button>
+      </div>
+    </div>
+    
+    <!-- QUESTIONS 6 to 29 (Repeat similar structure) -->
+    <!-- For brevity, the following questions follow the same pattern as questions 1-5. -->
+    
+    <!-- QUESTION 6 -->
+    <div class="question-page" id="q6" style="display: none;">
+      <div class="question-card">
+        <h3>6. Which of the following is least likely to affect the spectrum of secondary metabolites produced by a plant?</h3>
+        <div class="options-container">
+          <div class="option" onclick="selectAnswer(5, 0)">a) Environmental conditions</div>
+          <div class="option" onclick="selectAnswer(5, 1)">b) Genetic makeup</div>
+          <div class="option" onclick="selectAnswer(5, 2)">c) Water availability</div>
+          <div class="option" onclick="selectAnswer(5, 3)">d) Consumer preferences</div>
+        </div>
+        <button onclick="toggleExplanation(5)">Show Explanation</button>
+        <div class="explanation" id="exp5">
+          <p><strong>Detailed Explanation:</strong> Consumer preferences do not influence plant biochemistry, while environmental, genetic, and water factors do.</p>
+        </div>
+      </div>
+      <div class="nav-buttons">
+        <button onclick="prevQuestion()">Previous</button>
+        <button onclick="nextQuestion()">Next</button>
+      </div>
+    </div>
+    
+    <!-- QUESTION 7 -->
+    <div class="question-page" id="q7" style="display: none;">
+      <div class="question-card">
+        <h3>7. In metabolic pathways, the primary role of enzymes is to:</h3>
+        <div class="options-container">
+          <div class="option" onclick="selectAnswer(6, 0)">a) Transport molecules</div>
+          <div class="option" onclick="selectAnswer(6, 1)">b) Catalyze specific reactions</div>
+          <div class="option" onclick="selectAnswer(6, 2)">c) Store energy</div>
+          <div class="option" onclick="selectAnswer(6, 3)">d) Provide structural support</div>
+        </div>
+        <button onclick="toggleExplanation(6)">Show Explanation</button>
+        <div class="explanation" id="exp6">
+          <p><strong>Detailed Explanation:</strong> Enzymes speed up biochemical reactions, making them essential for metabolism.</p>
+        </div>
+      </div>
+      <div class="nav-buttons">
+        <button onclick="prevQuestion()">Previous</button>
+        <button onclick="nextQuestion()">Next</button>
+      </div>
+    </div>
+    
+    <!-- QUESTION 8 -->
+    <div class="question-page" id="q8" style="display: none;">
+      <div class="question-card">
+        <h3>8. What distinct advantage do plants have in chemical synthesis compared to other organisms?</h3>
+        <div class="options-container">
+          <div class="option" onclick="selectAnswer(7, 0)">a) Their ability to relocate</div>
+          <div class="option" onclick="selectAnswer(7, 1)">b) Their capacity to utilize sunlight</div>
+          <div class="option" onclick="selectAnswer(7, 2)">c) Their sophisticated digestive systems</div>
+          <div class="option" onclick="selectAnswer(7, 3)">d) Their overall size</div>
+        </div>
+        <button onclick="toggleExplanation(7)">Show Explanation</button>
+        <div class="explanation" id="exp7">
+          <p><strong>Detailed Explanation:</strong> Plants use sunlight via photosynthesis, a key advantage in synthesizing complex molecules.</p>
+        </div>
+      </div>
+      <div class="nav-buttons">
+        <button onclick="prevQuestion()">Previous</button>
+        <button onclick="nextQuestion()">Next</button>
+      </div>
+    </div>
+    
+    <!-- QUESTION 9 -->
+    <div class="question-page" id="q9" style="display: none;">
+      <div class="question-card">
+        <h3>9. Which of the following is NOT a common application of natural product chemistry?</h3>
+        <div class="options-container">
+          <div class="option" onclick="selectAnswer(8, 0)">a) Drug discovery</div>
+          <div class="option" onclick="selectAnswer(8, 1)">b) Innovations in the food industry</div>
+          <div class="option" onclick="selectAnswer(8, 2)">c) Materials science</div>
+          <div class="option" onclick="selectAnswer(8, 3)">d) Nuclear energy development</div>
+        </div>
+        <button onclick="toggleExplanation(8)">Show Explanation</button>
+        <div class="explanation" id="exp8">
+          <p><strong>Detailed Explanation:</strong> Natural product chemistry is key to drug, food, and materials research but is not typically applied to nuclear energy.</p>
+        </div>
+      </div>
+      <div class="nav-buttons">
+        <button onclick="prevQuestion()">Previous</button>
+        <button onclick="nextQuestion()">Next</button>
+      </div>
+    </div>
+    
+    <!-- QUESTION 10 -->
+    <div class="question-page" id="q10" style="display: none;">
+      <div class="question-card">
+        <h3>10. The greatest challenge in extracting natural products is often:</h3>
+        <div class="options-container">
+          <div class="option" onclick="selectAnswer(9, 0)">a) Locating the biological source</div>
+          <div class="option" onclick="selectAnswer(9, 1)">b) Overcoming low concentrations and complex mixtures</div>
+          <div class="option" onclick="selectAnswer(9, 2)">c) Replicating them synthetically</div>
+          <div class="option" onclick="selectAnswer(9, 3)">d) Determining their functional roles</div>
+        </div>
+        <button onclick="toggleExplanation(9)">Show Explanation</button>
+        <div class="explanation" id="exp9">
+          <p><strong>Detailed Explanation:</strong> Isolation is difficult due to the very low concentration of natural products within complex natural matrices.</p>
+        </div>
+      </div>
+      <div class="nav-buttons">
+        <button onclick="prevQuestion()">Previous</button>
+        <button onclick="nextQuestion()">Next</button>
+      </div>
+    </div>
+    
+    <!-- QUESTION 11 -->
+    <div class="question-page" id="q11" style="display: none;">
+      <div class="question-card">
+        <h3>11. Understanding coenzyme mechanisms is vital because it helps in:</h3>
+        <div class="options-container">
+          <div class="option" onclick="selectAnswer(10, 0)">a) Creating new fertilizers</div>
+          <div class="option" onclick="selectAnswer(10, 1)">b) Improving laboratory techniques</div>
+          <div class="option" onclick="selectAnswer(10, 2)">c) Regulating metabolic processes</div>
+          <div class="option" onclick="selectAnswer(10, 3)">d) Discovering new species</div>
+        </div>
+        <button onclick="toggleExplanation(10)">Show Explanation</button>
+        <div class="explanation" id="exp10">
+          <p><strong>Detailed Explanation:</strong> Coenzyme studies reveal how enzymes regulate metabolism, which is critical for understanding cellular function and potential drug targets.</p>
+        </div>
+      </div>
+      <div class="nav-buttons">
+        <button onclick="prevQuestion()">Previous</button>
+        <button onclick="nextQuestion()">Next</button>
+      </div>
+    </div>
+    
+    <!-- QUESTION 12 -->
+    <div class="question-page" id="q12" style="display: none;">
+      <div class="question-card">
+        <h3>12. Which characteristic is NOT typically associated with secondary metabolites?</h3>
+        <div class="options-container">
+          <div class="option" onclick="selectAnswer(11, 0)">a) Intricate molecular structures</div>
+          <div class="option" onclick="selectAnswer(11, 1)">b) Limited occurrence among species</div>
+          <div class="option" onclick="selectAnswer(11, 2)">c) Being indispensable for survival</div>
+          <div class="option" onclick="selectAnswer(11, 3)">d) Exhibiting diverse biological functions</div>
+        </div>
+        <button onclick="toggleExplanation(11)">Show Explanation</button>
+        <div class="explanation" id="exp11">
+          <p><strong>Detailed Explanation:</strong> Secondary metabolites are not essential for survival, though they are often structurally complex and functionally diverse.</p>
+        </div>
+      </div>
+      <div class="nav-buttons">
+        <button onclick="prevQuestion()">Previous</button>
+        <button onclick="nextQuestion()">Next</button>
+      </div>
+    </div>
+    
+    <!-- QUESTION 13 -->
+    <div class="question-page" id="q13" style="display: none;">
+      <div class="question-card">
+        <h3>13. In the study of metabolic pathways in natural product research, what is the primary focus?</h3>
+        <div class="options-container">
+          <div class="option" onclick="selectAnswer(12, 0)">a) Cataloging new species</div>
+          <div class="option" onclick="selectAnswer(12, 1)">b) Unraveling chemical processes</div>
+          <div class="option" onclick="selectAnswer(12, 2)">c) Advancing drug development</div>
+          <div class="option" onclick="selectAnswer(12, 3)">d) Optimizing photosynthesis</div>
+        </div>
+        <button onclick="toggleExplanation(12)">Show Explanation</button>
+        <div class="explanation" id="exp12">
+          <p><strong>Detailed Explanation:</strong> The focus is on understanding the chemical reactions that underlie the synthesis and function of natural products.</p>
+        </div>
+      </div>
+      <div class="nav-buttons">
+        <button onclick="prevQuestion()">Previous</button>
+        <button onclick="nextQuestion()">Next</button>
+      </div>
+    </div>
+    
+    <!-- QUESTION 14 -->
+    <div class="question-page" id="q14" style="display: none;">
+      <div class="question-card">
+        <h3>14. What key distinction separates plant from animal metabolism regarding chemical synthesis?</h3>
+        <div class="options-container">
+          <div class="option" onclick="selectAnswer(13, 0)">a) The use of photosynthesis in plants</div>
+          <div class="option" onclick="selectAnswer(13, 1)">b) A higher toxin production in animals</div>
+          <div class="option" onclick="selectAnswer(13, 2)">c) More intricate enzymatic systems in plants</div>
+          <div class="option" onclick="selectAnswer(13, 3)">d) The absence of chemical synthesis in animals</div>
+        </div>
+        <button onclick="toggleExplanation(13)">Show Explanation</button>
+               <div class="explanation" id="exp13">
+          <p><strong>Detailed Explanation:</strong> Plants use photosynthesis to produce energy and molecular building blocks--a capability not present in animals.</p>
+        </div>
+      </div>
+      <div class="nav-buttons">
+        <button onclick="prevQuestion()">Previous</button>
+        <button onclick="nextQuestion()">Next</button>
+      </div>
+    </div>
+    
+        <!-- QUESTION 15 -->
+    <div class="question-page" id="q15" style="display: none;">
+      <div class="question-card">
+        <h3>15. What is one of the main motivations for researching natural products in medicine?</h3>
+        <div class="options-container">
+          <div class="option" onclick="selectAnswer(14, 0)">a) To uncover new elements</div>
+          <div class="option" onclick="selectAnswer(14, 1)">b) To pinpoint novel drug candidates</div>
+          <div class="option" onclick="selectAnswer(14, 2)">c) To study plant pathology</div>
+          <div class="option" onclick="selectAnswer(14, 3)">d) To synthesize new plastics</div>
+        </div>
+        <button onclick="toggleExplanation(14)">Show Explanation</button>
+        <div class="explanation" id="exp14">
+          <p><strong>Detailed Explanation:</strong> The vast chemical diversity of natural products often leads to the discovery of new compounds that can serve as the basis for novel drugs.</p>
+        </div>
+      </div>
+      <div class="nav-buttons">
+        <button onclick="prevQuestion()">Previous</button>
+        <button onclick="nextQuestion()">Next</button>
+      </div>
+    </div>
+    
+    <!-- QUESTION 16 -->
+    <div class="question-page" id="q16" style="display: none;">
+      <div class="question-card">
+        <h3>16. Which factor is least influential in determining the profile of secondary metabolites in plants?</h3>
+        <div class="options-container">
+          <div class="option" onclick="selectAnswer(15, 0)">a) Climatic conditions</div>
+          <div class="option" onclick="selectAnswer(15, 1)">b) Genetic factors</div>
+          <div class="option" onclick="selectAnswer(15, 2)">c) Water supply</div>
+          <div class="option" onclick="selectAnswer(15, 3)">d) Consumer demand</div>
+        </div>
+        <button onclick="toggleExplanation(15)">Show Explanation</button>
+        <div class="explanation" id="exp15">
+          <p><strong>Detailed Explanation:</strong> While climate, genetics, and water supply affect metabolite production, consumer demand does not impact the biosynthetic process.</p>
+        </div>
+      </div>
+      <div class="nav-buttons">
+        <button onclick="prevQuestion()">Previous</button>
+        <button onclick="nextQuestion()">Next</button>
+      </div>
+    </div>
+    
+    <!-- QUESTION 17 -->
+    <div class="question-page" id="q17" style="display: none;">
+      <div class="question-card">
+        <h3>17. In the realm of metabolic pathways, enzymes are chiefly responsible for:</h3>
+        <div class="options-container">
+          <div class="option" onclick="selectAnswer(16, 0)">a) Shuttling molecules</div>
+          <div class="option" onclick="selectAnswer(16, 1)">b) Speeding up specific chemical reactions</div>
+          <div class="option" onclick="selectAnswer(16, 2)">c) Energy storage</div>
+          <div class="option" onclick="selectAnswer(16, 3)">d) Maintaining cellular structure</div>
+        </div>
+        <button onclick="toggleExplanation(16)">Show Explanation</button>
+        <div class="explanation" id="exp16">
+          <p><strong>Detailed Explanation:</strong> Enzymes catalyze reactions in metabolic pathways, ensuring processes occur quickly and efficiently.</p>
+        </div>
+      </div>
+      <div class="nav-buttons">
+        <button onclick="prevQuestion()">Previous</button>
+        <button onclick="nextQuestion()">Next</button>
+      </div>
+    </div>
+    
+    <!-- QUESTION 18 -->
+    <div class="question-page" id="q18" style="display: none;">
+      <div class="question-card">
+        <h3>18. A distinct advantage for plants in chemical synthesis is their:</h3>
+        <div class="options-container">
+          <div class="option" onclick="selectAnswer(17, 0)">a) Ability to move to favorable environments</div>
+          <div class="option" onclick="selectAnswer(17, 1)">b) Effective use of sunlight</div>
+          <div class="option" onclick="selectAnswer(17, 2)">c) Advanced digestive mechanisms</div>
+          <div class="option" onclick="selectAnswer(17, 3)">d) Large physical stature</div>
+        </div>
+        <button onclick="toggleExplanation(17)">Show Explanation</button>
+        <div class="explanation" id="exp17">
+          <p><strong>Detailed Explanation:</strong> Plants harness sunlight to fuel chemical synthesis--a unique advantage compared to organisms without photosynthesis.</p>
+        </div>
+      </div>
+      <div class="nav-buttons">
+        <button onclick="prevQuestion()">Previous</button>
+        <button onclick="nextQuestion()">Next</button>
+      </div>
+    </div>
+    
+    <!-- QUESTION 19 -->
+    <div class="question-page" id="q19" style="display: none;">
+      <div class="question-card">
+        <h3>19. Which sector is NOT generally linked to the applications of natural product chemistry?</h3>
+        <div class="options-container">
+          <div class="option" onclick="selectAnswer(18, 0)">a) Pharmaceutical development</div>
+          <div class="option" onclick="selectAnswer(18, 1)">b) The food industry</div>
+          <div class="option" onclick="selectAnswer(18, 2)">c) Materials research</div>
+          <div class="option" onclick="selectAnswer(18, 3)">d) Nuclear energy technology</div>
+        </div>
+        <button onclick="toggleExplanation(18)">Show Explanation</button>
+        <div class="explanation" id="exp18">
+          <p><strong>Detailed Explanation:</strong> Although natural product chemistry is crucial in several fields, it is generally not applied to nuclear energy research.</p>
+        </div>
+      </div>
+      <div class="nav-buttons">
+        <button onclick="prevQuestion()">Previous</button>
+        <button onclick="nextQuestion()">Next</button>
+      </div>
+    </div>
+    
+    <!-- QUESTION 20 -->
+    <div class="question-page" id="q20" style="display: none;">
+      <div class="question-card">
+        <h3>20. The chief difficulty in isolating natural products is typically:</h3>
+        <div class="options-container">
+          <div class="option" onclick="selectAnswer(19, 0)">a) Pinpointing the correct source</div>
+          <div class="option" onclick="selectAnswer(19, 1)">b) Dealing with low concentrations and complex mixtures</div>
+          <div class="option" onclick="selectAnswer(19, 2)">c) Overcoming challenges in lab synthesis</div>
+          <div class="option" onclick="selectAnswer(19, 3)">d) Clarifying their biological functions</div>
+        </div>
+        <button onclick="toggleExplanation(19)">Show Explanation</button>
+        <div class="explanation" id="exp19">
+          <p><strong>Detailed Explanation:</strong> Isolation is challenging because natural products are typically present in very low concentrations within complex mixtures.</p>
+        </div>
+      </div>
+      <div class="nav-buttons">
+        <button onclick="prevQuestion()">Previous</button>
+        <button onclick="nextQuestion()">Next</button>
+      </div>
+    </div>
+    
+    <!-- QUESTION 21 -->
+    <div class="question-page" id="q21" style="display: none;">
+      <div class="question-card">
+        <h3>21. Investigating coenzyme mechanisms is important because it helps in:</h3>
+        <div class="options-container">
+          <div class="option" onclick="selectAnswer(20, 0)">a) Creating new fertilizers</div>
+          <div class="option" onclick="selectAnswer(20, 1)">b) Improving laboratory techniques</div>
+          <div class="option" onclick="selectAnswer(20, 2)">c) Regulating metabolic processes</div>
+          <div class="option" onclick="selectAnswer(20, 3)">d) Discovering new species</div>
+        </div>
+        <button onclick="toggleExplanation(20)">Show Explanation</button>
+        <div class="explanation" id="exp20">
+          <p><strong>Detailed Explanation:</strong> Understanding coenzyme mechanisms is key to unraveling how metabolic regulation occurs, which can be applied in drug development.</p>
+        </div>
+      </div>
+      <div class="nav-buttons">
+        <button onclick="prevQuestion()">Previous</button>
+        <button onclick="nextQuestion()">Next</button>
+      </div>
+    </div>
+    
+    <!-- QUESTION 22 -->
+    <div class="question-page" id="q22" style="display: none;">
+      <div class="question-card">
+        <h3>22. Which trait is NOT generally a feature of secondary metabolites?</h3>
+        <div class="options-container">
+          <div class="option" onclick="selectAnswer(21, 0)">a) Highly complex structures</div>
+          <div class="option" onclick="selectAnswer(21, 1)">b) Restricted distribution</div>
+          <div class="option" onclick="selectAnswer(21, 2)">c) Necessity for organism survival</div>
+          <div class="option" onclick="selectAnswer(21, 3)">d) A wide range of biological activities</div>
+        </div>
+        <button onclick="toggleExplanation(21)">Show Explanation</button>
+        <div class="explanation" id="exp21">
+          <p><strong>Detailed Explanation:</strong> Although secondary metabolites are complex and diverse, they are not essential for basic survival.</p>
+        </div>
+      </div>
+      <div class="nav-buttons">
+        <button onclick="prevQuestion()">Previous</button>
+        <button onclick="nextQuestion()">Next</button>
+      </div>
+    </div>
+    
+    <!-- QUESTION 23 -->
+    <div class="question-page" id="q23" style="display: none;">
+      <div class="question-card">
+        <h3>23. The central focus of studying metabolic pathways in natural product research is to:</h3>
+        <div class="options-container">
+          <div class="option" onclick="selectAnswer(22, 0)">a) Document new species</div>
+          <div class="option" onclick="selectAnswer(22, 1)">b) Comprehend underlying chemical processes</div>
+          <div class="option" onclick="selectAnswer(22, 2)">c) Foster drug innovation</div>
+          <div class="option" onclick="selectAnswer(22, 3)">d) Increase photosynthetic output</div>
+        </div>
+        <button onclick="toggleExplanation(22)">Show Explanation</button>
+        <div class="explanation" id="exp22">
+          <p><strong>Detailed Explanation:</strong> The primary goal is to understand the chemical reactions that form the basis of natural product synthesis and function.</p>
+        </div>
+      </div>
+      <div class="nav-buttons">
+        <button onclick="prevQuestion()">Previous</button>
+        <button onclick="nextQuestion()">Next</button>
+      </div>
+    </div>
+    
+    <!-- QUESTION 24 -->
+    <div class="question-page" id="q24" style="display: none;">
+      <div class="question-card">
+        <h3>24. How does plant metabolism fundamentally differ from that of animals in chemical synthesis?</h3>
+        <div class="options-container">
+          <div class="option" onclick="selectAnswer(23, 0)">a) Through the process of photosynthesis</div>
+          <div class="option" onclick="selectAnswer(23, 1)">b) By producing a broader array of toxins</div>
+          <div class="option" onclick="selectAnswer(23, 2)">c) Via more complex enzymatic pathways</div>
+          <div class="option" onclick="selectAnswer(23, 3)">d) Since animals lack the ability to synthesize chemicals</div>
+        </div>
+        <button onclick="toggleExplanation(23)">Show Explanation</button>
+        <div class="explanation" id="exp23">
+          <p><strong>Detailed Explanation:</strong> Plants rely on photosynthesis to power chemical synthesis, unlike animals which use different metabolic routes.</p>
+        </div>
+      </div>
+      <div class="nav-buttons">
+        <button onclick="prevQuestion()">Previous</button>
+        <button onclick="nextQuestion()">Next</button>
+      </div>
+    </div>
+    
+    <!-- QUESTION 25 -->
+    <div class="question-page" id="q25" style="display: none;">
+      <div class="question-card">
+        <h3>25. What is the primary reason for examining natural products within the context of medicine?</h3>
+        <div class="options-container">
+          <div class="option" onclick="selectAnswer(24, 0)">a) To identify previously unknown elements</div>
+          <div class="option" onclick="selectAnswer(24, 1)">b) To find potential drug leads</div>
+          <div class="option" onclick="selectAnswer(24, 2)">c) To explore plant disease mechanisms</div>
+          <div class="option" onclick="selectAnswer(24, 3)">d) To develop novel plastics</div>
+        </div>
+        <button onclick="toggleExplanation(24)">Show Explanation</button>
+        <div class="explanation" id="exp24">
+          <p><strong>Detailed Explanation:</strong> Discovering novel drug leads is a major driver behind natural product research, owing to nature's vast chemical diversity.</p>
+        </div>
+      </div>
+      <div class="nav-buttons">
+        <button onclick="prevQuestion()">Previous</button>
+        <button onclick="nextQuestion()">Next</button>
+      </div>
+    </div>
+    
+    <!-- QUESTION 26 -->
+    <div class="question-page" id="q26" style="display: none;">
+      <div class="question-card">
+        <h3>26. Which element is the least likely to influence a plant's production of secondary metabolites?</h3>
+        <div class="options-container">
+          <div class="option" onclick="selectAnswer(25, 0)">a) Environmental factors</div>
+          <div class="option" onclick="selectAnswer(25, 1)">b) Genetic constitution</div>
+          <div class="option" onclick="selectAnswer(25, 2)">c) Availability of water</div>
+          <div class="option" onclick="selectAnswer(25, 3)">d) Consumer preferences</div>
+        </div>
+        <button onclick="toggleExplanation(25)">Show Explanation</button>
+        <div class="explanation" id="exp25">
+          <p><strong>Detailed Explanation:</strong> While environmental, genetic, and water-related factors affect metabolite production, consumer preferences do not.</p>
+        </div>
+      </div>
+      <div class="nav-buttons">
+        <button onclick="prevQuestion()">Previous</button>
+        <button onclick="nextQuestion()">Next</button>
+      </div>
+    </div>
+    
+    <!-- QUESTION 27 -->
+    <div class="question-page" id="q27" style="display: none;">
+      <div class="question-card">
+        <h3>27. In the realm of metabolic pathways, enzymes are chiefly responsible for:</h3>
+        <div class="options-container">
+          <div class="option" onclick="selectAnswer(26, 0)">a) Shuttling molecules</div>
+          <div class="option" onclick="selectAnswer(26, 1)">b) Speeding up specific chemical reactions</div>
+          <div class="option" onclick="selectAnswer(26, 2)">c) Energy storage</div>
+          <div class="option" onclick="selectAnswer(26, 3)">d) Maintaining cellular structure</div>
+        </div>
+        <button onclick="toggleExplanation(26)">Show Explanation</button>
+        <div class="explanation" id="exp26">
+          <p><strong>Detailed Explanation:</strong> Enzymes accelerate reactions in metabolic pathways, ensuring that cellular processes run efficiently.</p>
+        </div>
+      </div>
+      <div class="nav-buttons">
+        <button onclick="prevQuestion()">Previous</button>
+        <button onclick="nextQuestion()">Next</button>
+      </div>
+    </div>
+    
+    <!-- QUESTION 28 -->
+    <div class="question-page" id="q28" style="display: none;">
+      <div class="question-card">
+        <h3>28. What is a notable advantage of plants in the synthesis of chemicals?</h3>
+        <div class="options-container">
+          <div class="option" onclick="selectAnswer(27, 0)">a) Their mobility in response to stimuli</div>
+          <div class="option" onclick="selectAnswer(27, 1)">b) Their proficiency in utilizing sunlight</div>
+          <div class="option" onclick="selectAnswer(27, 2)">c) Their complex digestive systems</div>
+          <div class="option" onclick="selectAnswer(27, 3)">d) Their overall large size</div>
+        </div>
+        <button onclick="toggleExplanation(27)">Show Explanation</button>
+        <div class="explanation" id="exp27">
+          <p><strong>Detailed Explanation:</strong> Plants excel at harnessing sunlight to drive chemical synthesis, a unique capability among living organisms.</p>
+        </div>
+      </div>
+      <div class="nav-buttons">
+        <button onclick="prevQuestion()">Previous</button>
+        <button onclick="nextQuestion()">Next</button>
+      </div>
+    </div>
+    
+    <!-- QUESTION 29 -->
+    <div class="question-page" id="q29" style="display: none;">
+      <div class="question-card">
+        <h3>29. Which field does not typically fall within the scope of natural product chemistry?</h3>
+        <div class="options-container">
+          <div class="option" onclick="selectAnswer(28, 0)">a) Drug development</div>
+          <div class="option" onclick="selectAnswer(28, 1)">b) Food technology</div>
+          <div class="option" onclick="selectAnswer(28, 2)">c) Materials science</div>
+          <div class="option" onclick="selectAnswer(28, 3)">d) Nuclear energy research</div>
+        </div>
+        <button onclick="toggleExplanation(28)">Show Explanation</button>
+        <div class="explanation" id="exp28">
+          <p><strong>Detailed Explanation:</strong> While natural product chemistry is crucial in many fields, it is generally not applied to nuclear energy research.</p>
+        </div>
+      </div>
+      <div class="nav-buttons">
+        <button onclick="prevQuestion()">Previous</button>
+        <button onclick="nextQuestion()">Next</button>
+      </div>
+    </div>
+    
+    <!-- QUESTION 30 -->
+    <div class="question-page" id="q30" style="display: none;">
+      <div class="question-card">
+        <h3>30. What is widely regarded as the primary obstacle in the extraction of natural products?</h3>
+        <div class="options-container">
+          <div class="option" onclick="selectAnswer(29, 0)">a) Identifying the source organism</div>
+          <div class="option" onclick="selectAnswer(29, 1)">b) Overcoming issues of low concentration and complex mixtures</div>
+          <div class="option" onclick="selectAnswer(29, 2)">c) Replicating the compounds in the laboratory</div>
+          <div class="option" onclick="selectAnswer(29, 3)">d) Deciphering their functional roles</div>
+        </div>
+        <button onclick="toggleExplanation(29)">Show Explanation</button>
+        <div class="explanation" id="exp29">
+          <p><strong>Detailed Explanation:</strong> The extraction of natural products is challenging due to their low concentration in complex natural matrices, necessitating advanced isolation techniques.</p>
+        </div>
+      </div>
+      <div class="nav-buttons">
+        <button onclick="prevQuestion()">Previous</button>
+        <button onclick="submitQuiz()">Finish Quiz</button>
+      </div>
+    </div>
+    
+    <!-- Final Score Page -->
+    <div class="question-page" id="score-page" style="display: none;">
+      <div class="question-card">
+        <h2>Quiz Complete! 🎉</h2>
+        <div class="score-box">
+          <p>Your Score: <strong id="final-score">0</strong>/30</p>
+          <p>Percentage: <strong id="final-percent">0%</strong></p>
+        </div>
+        <div style="text-align: center;">
+          <button onclick="reviewWrongAnswers()">Review Incorrect Answers</button>
+          <button onclick="restartQuiz()">Try Again</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Review Section -->
+  <div id="review-section" style="display: none;">
+    <div class="question-card">
+      <h2 style="text-align: center;">Review Incorrect Answers</h2>
+      <div id="review-list"></div>
+      <div style="text-align: center; margin-top: 20px;">
+        <button onclick="restartQuiz()">Back to Quiz</button>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    let currentQuestion = 0;
+    const totalQuestions = 30;
+    let userAnswers = new Array(totalQuestions).fill(null);
+    const correctAnswers = [
+      2, 1, 1, 0, 1,
+      3, 1, 1, 3, 1,
+      2, 2, 1, 0, 1,
+      3, 1, 1, 3, 1,
+      2, 2, 1, 0, 1,
+      3, 1, 1, 3, 1
+    ];
+    
+    function nextQuestion() {
+      const currentDiv = document.getElementById("q" + (currentQuestion + 1));
+      currentDiv.classList.add("slide-out-left");
+      setTimeout(() => {
+        currentDiv.classList.remove("slide-out-left");
+        currentDiv.style.display = "none";
+        currentQuestion++;
+        const nextDiv = document.getElementById("q" + (currentQuestion + 1));
+        nextDiv.style.display = "block";
+        nextDiv.classList.add("slide-in-right");
+        setTimeout(() => { nextDiv.classList.remove("slide-in-right"); }, 500);
+      }, 500);
+    }
+    
+    function prevQuestion() {
+      const currentDiv = document.getElementById("q" + (currentQuestion + 1));
+      currentDiv.classList.add("slide-out-right");
+      setTimeout(() => {
+        currentDiv.classList.remove("slide-out-right");
+        currentDiv.style.display = "none";
+        currentQuestion--;
+        const prevDiv = document.getElementById("q" + (currentQuestion + 1));
+        prevDiv.style.display = "block";
+        prevDiv.classList.add("slide-in-left");
+        setTimeout(() => { prevDiv.classList.remove("slide-in-left"); }, 500);
+      }, 500);
+    }
+    
+    function selectAnswer(qIndex, answerIndex) {
+      if (userAnswers[qIndex] !== null) return;
+      const question = document.getElementById("q" + (qIndex + 1));
+      const options = question.querySelectorAll(".option");
+      userAnswers[qIndex] = answerIndex;
+      options.forEach(opt => opt.style.pointerEvents = "none");
+      if (answerIndex === correctAnswers[qIndex]) {
+        options[answerIndex].classList.add("correct");
+        options[answerIndex].innerHTML += '<span class="feedback-icon">✓</span>';
+      } else {
+        options[answerIndex].classList.add("incorrect");
+        options[answerIndex].innerHTML += '<span class="feedback-icon">✕</span>';
+        options[correctAnswers[qIndex]].classList.add("correct");
+        options[correctAnswers[qIndex]].innerHTML += '<span class="feedback-icon">✓</span>';
+      }
+    }
+    
+    function toggleExplanation(qIndex) {
+      const explanation = document.getElementById("exp" + qIndex);
+      explanation.classList.toggle("visible");
+    }
+    
+    function submitQuiz() {
+      let score = 0;
+      for (let i = 0; i < totalQuestions; i++) {
+        if (userAnswers[i] === correctAnswers[i]) {
+          score++;
+        }
+      }
+      document.getElementById("final-score").textContent = score;
+      const percent = ((score / totalQuestions) * 100).toFixed(2) + "%";
+      document.getElementById("final-percent").textContent = percent;
+      document.getElementById("quiz-container").style.display = "none";
+      document.getElementById("score-page").style.display = "block";
+    }
+    
+    function reviewWrongAnswers() {
+      const reviewList = document.getElementById("review-list");
+      reviewList.innerHTML = "";
+      for (let i = 0; i < totalQuestions; i++) {
+        if (userAnswers[i] !== correctAnswers[i]) {
+          const questionElem = document.getElementById("q" + (i + 1));
+          const questionText = questionElem.querySelector(".question-card h3").textContent;
+          const options = questionElem.querySelectorAll(".option");
+          let optionsText = [];
+          options.forEach(opt => {
+            optionsText.push(opt.textContent.replace("✓", "").replace("✕", "").trim());
+          });
+          const explanationText = questionElem.querySelector(".explanation").textContent;
+          const card = document.createElement("div");
+          card.className = "question-card";
+          card.innerHTML = `<h3>${questionText}</h3>
+            <p><strong>Your Answer:</strong> ${optionsText[userAnswers[i]] || "None"}</p>
+            <p><strong>Correct Answer:</strong> ${optionsText[correctAnswers[i]]}</p>
+            <p><strong>Explanation:</strong> ${explanationText}</p>`;
+          reviewList.appendChild(card);
+        }
+      }
+      document.getElementById("score-page").style.display = "none";
+      document.getElementById("review-section").style.display = "block";
+    }
+    
+    function restartQuiz() {
+      location.reload();
+    }
+  </script>
+</body>
+</html>

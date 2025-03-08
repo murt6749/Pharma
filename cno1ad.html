@@ -1,0 +1,1009 @@
+<meta name='viewport' content='width=device-width, initial-scale=1'/><meta name='viewport' content='width=device-width, initial-scale=1'/>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Steroids Quiz (60 Questions)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    /* Global Styles */
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f8ff;
+      color: #333;
+      margin: 0;
+      padding: 0;
+      line-height: 1.6;
+      transition: background 0.3s, color 0.3s;
+    }
+    /* Dark Mode Overrides */
+    body.dark-mode {
+      background: #121212;
+      color: #f5f5f5;
+    }
+    body.dark-mode header {
+      background: #263238;
+    }
+    body.dark-mode main {
+      background: #1e1e1e;
+      color: #f5f5f5;
+    }
+    body.dark-mode footer {
+      background: #263238;
+    }
+    /* Header and Navigation */
+    header {
+      background: #00796b;
+      color: #fff;
+      padding: 1em 0;
+      text-align: center;
+      position: relative;
+    }
+    nav ul {
+      list-style: none;
+      padding: 0;
+      text-align: center;
+      margin: 10px 0 0 0;
+    }
+    nav ul li {
+      display: inline-block;
+      margin: 0 15px;
+    }
+    nav ul li a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 1.1em;
+      cursor: pointer;
+    }
+    #toggleMode, #toggleSummary {
+      position: absolute;
+      top: 10px;
+      background: #004d40;
+      color: #fff;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 0.9em;
+    }
+    #toggleMode {
+      right: 10px;
+    }
+    #toggleSummary {
+      right: 120px;
+    }
+    #toggleMode:hover, #toggleSummary:hover {
+      background: #00332e;
+    }
+    /* Main Content */
+    main {
+      max-width: 900px;
+      margin: 20px auto;
+      padding: 20px;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    body.dark-mode main {
+      background: #1e1e1e;
+    }
+    h1, h2 {
+      color: #00796b;
+    }
+    body.dark-mode h1, 
+    body.dark-mode h2 {
+      color: #80cbc4;
+    }
+    footer {
+      text-align: center;
+      padding: 10px;
+      background: #00796b;
+      color: #fff;
+      margin-top: 20px;
+    }
+    /* Quiz Section */
+    .question-container {
+      margin-bottom: 30px;
+    }
+    .question-container h2 {
+      font-size: 1.3em;
+    }
+    .optionBtn {
+      display: block;
+      width: 100%;
+      padding: 12px;
+      margin: 8px 0;
+      border: 2px solid #00796b;
+      border-radius: 5px;
+      background: #fff;
+      font-size: 1em;
+      cursor: pointer;
+      color: #00796b;
+      transition: background 0.3s, color 0.3s;
+    }
+    .optionBtn:hover {
+      background: #e0f2f1;
+    }
+    /* Dark Mode Options */
+    body.dark-mode .optionBtn {
+      background: #333;
+      border: 2px solid #80cbc4;
+      color: #f5f5f5;
+    }
+    body.dark-mode .optionBtn:hover {
+      background: #444;
+    }
+    body.dark-mode .optionBtn.correct {
+      background: #388e3c;
+      border-color: #388e3c;
+      color: #fff;
+    }
+    body.dark-mode .optionBtn.incorrect {
+      background: #d32f2f;
+      border-color: #d32f2f;
+      color: #fff;
+    }
+    .optionBtn.correct {
+      background: #4CAF50;
+      color: #fff;
+      border-color: #4CAF50;
+    }
+    .optionBtn.incorrect {
+      background: #f44336;
+      color: #fff;
+      border-color: #f44336;
+    }
+    #feedback {
+      font-size: 1.1em;
+      margin: 10px 0;
+    }
+    #explanation {
+      background: #e0f7fa;
+      border-left: 5px solid #00796b;
+      padding: 10px;
+      margin: 10px 0;
+      display: none;
+    }
+    body.dark-mode #explanation {
+      background: #37474f;
+      border-left: 5px solid #80cbc4;
+      color: #f5f5f5;
+    }
+    #showExplanation, #nextBtn {
+      padding: 10px 15px;
+      margin: 10px 5px;
+      border: none;
+      border-radius: 5px;
+      background: #00796b;
+      color: #fff;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    #showExplanation:hover, #nextBtn:hover {
+      background: #004d40;
+    }
+    /* Result Section */
+    #result-container {
+      text-align: center;
+      margin-top: 30px;
+      padding: 20px;
+      background: #c8e6c9;
+      border-radius: 8px;
+      display: none;
+    }
+    /* Summary Section */
+    #summary {
+      margin-top: 40px;
+      padding: 20px;
+      background: #f1f8e9;
+      border: 2px solid #8bc34a;
+      border-radius: 8px;
+      display: none;
+    }
+    #summary h2 {
+      color: #33691e;
+    }
+    #summary ul {
+      list-style: disc;
+      padding-left: 20px;
+    }
+    body.dark-mode #summary {
+      background: #263238;
+      border: 2px solid #80cbc4;
+    }
+    body.dark-mode #summary h2 {
+      color: #80cbc4;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Steroids Quiz</h1>
+    <button id="toggleSummary">Show Summary</button>
+    <button id="toggleMode">Dark Mode</button>
+    <nav>
+      <ul>
+        <li><a href="#quiz-section">Quiz</a></li>
+        <li><a href="#summary" id="summaryLink">Summary</a></li>
+      </ul>
+    </nav>
+  </header>
+  
+  <main>
+    <!-- Quiz Section -->
+    <section id="quiz-section">
+      <div id="quiz-container">
+        <!-- Questions load here dynamically -->
+      </div>
+      <div id="feedback"></div>
+      <button id="showExplanation" style="display: none;">Show Explanation</button>
+      <div id="explanation"></div>
+      <button id="nextBtn" style="display: none;">Next</button>
+    </section>
+    
+    <!-- Result Section -->
+    <div id="result-container"></div>
+    
+    <!-- Summary Section -->
+    <section id="summary">
+      <h2>Summary of Key Concepts in Steroids</h2>
+      <ul>
+        <li><strong>Definition:</strong> Steroids are naturally occurring organic compounds and their derivatives, playing vital roles in biology, medicine, and chemistry.</li>
+        <li><strong>Structure:</strong> They share a common gonane nucleus (17 carbons in four rings: A, B, C, and D).</li>
+        <li><strong>Stereochemistry:</strong> Variations such as cis and trans isomers affect the 3D shape and biological activity.</li>
+        <li><strong>Numbering:</strong> A fixed carbon numbering system aids in nomenclature and modification.</li>
+        <li><strong>Biosynthesis:</strong> Derived from cholesterol through a multi-step pathway (acetate → mevalonate → squalene → lanosterol → cholesterol).</li>
+        <li><strong>Key Enzymes:</strong> Enzymes such as HMG-CoA reductase and CYP11A1 are essential in steroid biosynthesis.</li>
+        <li><strong>Cholesterol Sources:</strong> Cells synthesize cholesterol de novo, uptake LDL, and store it in lipid droplets.</li>
+        <li><strong>Steroid Hormones:</strong> Include glucocorticoids, mineralocorticoids, androgens, estrogens, and progestogens.</li>
+        <li><strong>Transport & Action:</strong> Steroid hormones are lipid soluble and circulate bound to specific binding proteins.</li>
+        <li><strong>Clinical Relevance:</strong> Synthetic steroids and cholesterol regulation are key in treating various diseases.</li>
+      </ul>
+    </section>
+  </main>
+  
+  <footer>
+    <p>&copy; 2025 Steroids Quiz</p>
+  </footer>
+  
+  <script>
+    // 60-Question Data with Enhanced Explanations
+    const quizData = [
+      {
+        question: "1. Which of the following best describes primary metabolites?",
+        options: [
+          { text: "Compounds produced for defense mechanisms", correct: false },
+          { text: "Compounds involved in essential cellular functions", correct: true },
+          { text: "Specialized compounds only found in specific plants", correct: false },
+          { text: "Molecules synthesized to attract pollinators", correct: false }
+        ],
+        explanation: "Primary metabolites are those that are fundamental for an organism's basic metabolic processes--such as amino acids, nucleotides, and carbohydrates. They are essential for growth, development, and reproduction."
+      },
+      {
+        question: "2. Which is a common characteristic of secondary metabolites?",
+        options: [
+          { text: "Involvement in cellular respiration", correct: false },
+          { text: "Universal presence in all organisms", correct: false },
+          { text: "Specific roles such as defense or signaling", correct: true },
+          { text: "Essential for organismal survival", correct: false }
+        ],
+        explanation: "Secondary metabolites are not directly required for basic cellular functions but often serve specialized roles, such as defense, competition, or communication. They can be unique to specific organisms or taxa."
+      },
+      {
+        question: "3. Gibberellins are classified as:",
+        options: [
+          { text: "Primary metabolites", correct: false },
+          { text: "Secondary metabolites", correct: true },
+          { text: "Triterpenes", correct: false },
+          { text: "Alkaloids", correct: false }
+        ],
+        explanation: "Gibberellins are plant hormones that regulate growth and developmental processes. Despite their importance in plants, they are considered secondary metabolites since they are not universally required for cell survival."
+      },
+      {
+        question: "4. What type of compound is abietic acid?",
+        options: [
+          { text: "Amino acid", correct: false },
+          { text: "Terpenoid resin acid", correct: true },
+          { text: "Alkaloid", correct: false },
+          { text: "Steroid", correct: false }
+        ],
+        explanation: "Abietic acid is a resin acid found in conifers and classified as a terpenoid. It plays a defensive role against herbivores and pathogens and contributes to the characteristic resinous smell of pine."
+      },
+      {
+        question: "5. Which analytical technique is most commonly used to determine the structure of natural products?",
+        options: [
+          { text: "NMR Spectroscopy", correct: true },
+          { text: "Chromatography", correct: false },
+          { text: "Mass Spectrometry", correct: false },
+          { text: "X-ray Diffraction", correct: false }
+        ],
+        explanation: "NMR spectroscopy is a powerful tool for elucidating the molecular structure of complex organic compounds, including steroids and other natural products. It provides detailed insights into how atoms are connected and arranged in 3D space."
+      },
+      {
+        question: "6. What is the main function of secondary metabolites in plants?",
+        options: [
+          { text: "Photosynthesis", correct: false },
+          { text: "Reproduction", correct: false },
+          { text: "Defense and signaling", correct: true },
+          { text: "Protein synthesis", correct: false }
+        ],
+        explanation: "Plants produce secondary metabolites primarily for defense against herbivores and pathogens, as well as for signaling with other organisms (e.g., attracting pollinators or symbiotic partners). They are not part of the essential metabolic processes of every cell."
+      },
+      {
+        question: "7. Which of the following is a diterpenoid?",
+        options: [
+          { text: "Proline", correct: false },
+          { text: "Kaurenoic acid", correct: true },
+          { text: "Squalene", correct: false },
+          { text: "Abietic acid", correct: false }
+        ],
+        explanation: "Kaurenoic acid is a diterpenoid, derived from four isoprene units (20 carbons). Diterpenoids serve important roles in plant growth regulation and defense."
+      },
+      {
+        question: "8. Which plant-derived compound is used as a heart medication?",
+        options: [
+          { text: "Digitoxin", correct: true },
+          { text: "Aspirin", correct: false },
+          { text: "Morphine", correct: false },
+          { text: "Quinine", correct: false }
+        ],
+        explanation: "Digitoxin is a cardiac glycoside obtained from foxglove (Digitalis). It is used clinically to strengthen cardiac contractions and manage certain arrhythmias."
+      },
+      {
+        question: "9. What does the term 'biosynthetic pathway' refer to?",
+        options: [
+          { text: "The breakdown of chemical compounds in metabolism", correct: false },
+          { text: "The sequence of chemical reactions leading to natural product synthesis", correct: true },
+          { text: "The storage of natural compounds in the environment", correct: false },
+          { text: "The transport of molecules in cells", correct: false }
+        ],
+        explanation: "A biosynthetic pathway is a series of enzyme-catalyzed steps that convert simple precursors into more complex products. In steroid biosynthesis, for instance, multiple enzymes act sequentially to transform acetate into cholesterol."
+      },
+      {
+        question: "10. Which of the following best explains the role of chirality in natural products?",
+        options: [
+          { text: "It alters the chemical structure.", correct: false },
+          { text: "It influences biological activity.", correct: true },
+          { text: "It determines solubility in water.", correct: false },
+          { text: "It is involved in photosynthesis.", correct: false }
+        ],
+        explanation: "Chirality, or the presence of non-superimposable mirror images (enantiomers), can drastically affect how a molecule interacts with enzymes and receptors. Enantiomers often have distinct pharmacological profiles."
+      },
+      {
+        question: "11. Pipecolic acid is:",
+        options: [
+          { text: "A type of triterpene", correct: false },
+          { text: "An amino acid derivative", correct: true },
+          { text: "A form of steroid", correct: false },
+          { text: "A plant pigment", correct: false }
+        ],
+        explanation: "Pipecolic acid is derived from lysine and plays roles in plant stress responses. It functions as a signaling molecule in activating immune pathways."
+      },
+      {
+        question: "12. Which of the following is an essential amino acid?",
+        options: [
+          { text: "Glycine", correct: false },
+          { text: "Alanine", correct: false },
+          { text: "Tryptophan", correct: true },
+          { text: "Proline", correct: false }
+        ],
+        explanation: "Tryptophan is an essential amino acid that must be obtained from the diet. It is critical for protein synthesis and is a precursor to several important biomolecules such as serotonin."
+      },
+      {
+        question: "13. What type of compound is disparlure?",
+        options: [
+          { text: "Enzyme", correct: false },
+          { text: "Pheromone", correct: true },
+          { text: "Plant hormone", correct: false },
+          { text: "Pigment", correct: false }
+        ],
+        explanation: "Disparlure is a pheromone used by certain insects for communication, particularly mating. Pheromones are specialized chemical signals that trigger specific behavioral responses in members of the same species."
+      },
+      {
+        question: "14. Which of the following compounds is classified as a secondary metabolite?",
+        options: [
+          { text: "Glucose", correct: false },
+          { text: "Starch", correct: false },
+          { text: "Gibberellin", correct: true },
+          { text: "ATP", correct: false }
+        ],
+        explanation: "Gibberellins are secondary metabolites (plant hormones) that regulate growth and development. They are not required for basic cellular processes but are crucial for specific physiological and developmental functions."
+      },
+      {
+        question: "15. How do plants typically use terpenoids like kaurenoic acid?",
+        options: [
+          { text: "For energy production", correct: false },
+          { text: "As defensive chemicals", correct: true },
+          { text: "As building blocks for proteins", correct: false },
+          { text: "To transport nutrients", correct: false }
+        ],
+        explanation: "Terpenoids like kaurenoic acid are often deployed as defense compounds. They can deter herbivores and pathogens, and some also serve as precursors to plant hormones (e.g., gibberellins)."
+      },
+      {
+        question: "16. Which technique is primarily used to separate natural products?",
+        options: [
+          { text: "Polymerase Chain Reaction (PCR)", correct: false },
+          { text: "Liquid Chromatography", correct: true },
+          { text: "Gel Electrophoresis", correct: false },
+          { text: "X-ray Crystallography", correct: false }
+        ],
+        explanation: "Liquid chromatography exploits differences in polarity and other properties to separate components of a mixture. It is a cornerstone method in natural product chemistry for isolating and purifying active compounds."
+      },
+      {
+        question: "17. What is the main challenge of using natural products in drug discovery?",
+        options: [
+          { text: "Difficulty in isolating compounds", correct: true },
+          { text: "Limited availability of source material", correct: false },
+          { text: "Inability to determine biological activity", correct: false },
+          { text: "All of the above", correct: false }
+        ],
+        explanation: "The isolation of pure active compounds from complex natural mixtures is often the biggest hurdle. While source availability and activity assays can also pose challenges, the primary bottleneck is typically purification."
+      },
+      {
+        question: "18. Gibberellins play a key role in:",
+        options: [
+          { text: "Seed germination and growth regulation in plants", correct: true },
+          { text: "Defense against herbivores", correct: false },
+          { text: "Protein synthesis", correct: false },
+          { text: "Amino acid metabolism", correct: false }
+        ],
+        explanation: "Gibberellins are plant hormones that regulate critical growth processes, including seed germination, stem elongation, and flowering. They are vital in agricultural applications to control plant height and development."
+      },
+      {
+        question: "19. How are fatty acids classified in metabolism?",
+        options: [
+          { text: "Secondary metabolites", correct: false },
+          { text: "Tertiary metabolites", correct: false },
+          { text: "Primary metabolites", correct: true },
+          { text: "Lipid hormones", correct: false }
+        ],
+        explanation: "Fatty acids are primary metabolites, serving as fundamental components of cell membranes and as key energy-storage molecules. They are essential for normal cellular function."
+      },
+      {
+        question: "20. Which class of natural products do digitoxin and other cardiac glycosides belong to?",
+        options: [
+          { text: "Terpenoids", correct: false },
+          { text: "Alkaloids", correct: false },
+          { text: "Flavonoids", correct: false },
+          { text: "Glycosides", correct: true }
+        ],
+        explanation: "Digitoxin is a cardiac glycoside, characterized by a steroid nucleus with attached sugar groups. These compounds increase the force of cardiac contractions and are used in managing certain heart conditions."
+      },
+      {
+        question: "21. Why are secondary metabolites important in ecological interactions?",
+        options: [
+          { text: "They store energy for plants", correct: false },
+          { text: "They protect plants against predators and pathogens", correct: true },
+          { text: "They act as primary nutrients for all organisms", correct: false },
+          { text: "They serve as building blocks for proteins", correct: false }
+        ],
+        explanation: "Secondary metabolites help plants defend themselves against herbivores, insects, and pathogens. They also mediate ecological interactions such as pollinator attraction and symbiotic relationships."
+      },
+      {
+        question: "22. Proline is primarily classified as:",
+        options: [
+          { text: "A secondary metabolite", correct: false },
+          { text: "A primary metabolite", correct: true },
+          { text: "A triterpene", correct: false },
+          { text: "A nucleic acid", correct: false }
+        ],
+        explanation: "Proline is an amino acid, making it a primary metabolite. It is essential for protein synthesis and helps plants and animals respond to stress conditions."
+      },
+      {
+        question: "23. Which of the following is a key factor in determining the pharmacological activity of a natural product?",
+        options: [
+          { text: "Its chirality", correct: true },
+          { text: "Its mass", correct: false },
+          { text: "Its color", correct: false },
+          { text: "Its solubility", correct: false }
+        ],
+        explanation: "Chirality (the three-dimensional arrangement of atoms) is crucial for how a compound binds to enzymes or receptors. Two enantiomers of the same molecule can have dramatically different biological effects."
+      },
+      {
+        question: "24. What role do natural product metabolites like terpenes often play in plants?",
+        options: [
+          { text: "Photosynthesis", correct: false },
+          { text: "Defense mechanisms and ecological interactions", correct: true },
+          { text: "Cellular respiration", correct: false },
+          { text: "Protein synthesis", correct: false }
+        ],
+        explanation: "Terpenes can act as repellents to herbivores, attractants to pollinators, and serve many other ecological functions. They help plants survive and reproduce under various environmental conditions."
+      },
+      {
+        question: "25. Digitoxin is primarily derived from:",
+        options: [
+          { text: "Laboratory synthesis", correct: false },
+          { text: "Foxglove plant (Digitalis species)", correct: true },
+          { text: "Fungi", correct: false },
+          { text: "Bacteria", correct: false }
+        ],
+        explanation: "Digitoxin is extracted from the foxglove plant (Digitalis). It is a potent cardiac glycoside used to increase the contractile force of the heart and manage arrhythmias."
+      },
+      {
+        question: "26. What is the role of pipecolic acid in plants?",
+        options: [
+          { text: "Involvement in defense signaling", correct: true },
+          { text: "Photosynthesis", correct: false },
+          { text: "Production of ATP", correct: false },
+          { text: "Cell wall structure", correct: false }
+        ],
+        explanation: "Pipecolic acid is derived from lysine and serves as a signaling molecule that activates defense pathways in plants, enhancing their immune responses to stress and pathogens."
+      },
+      {
+        question: "27. Which of the following is commonly used in the biosynthesis of plant hormones?",
+        options: [
+          { text: "Pipecolic acid", correct: false },
+          { text: "Kaurenoic acid", correct: true },
+          { text: "Proline", correct: false },
+          { text: "Glucose", correct: false }
+        ],
+        explanation: "Kaurenoic acid is a metabolic precursor for gibberellins, which are plant hormones regulating growth and development. The conversion of kaurenoic acid into active gibberellins is a crucial step in plant hormone biosynthesis."
+      },
+      {
+        question: "28. What is the main chemical structure feature of triterpenes?",
+        options: [
+          { text: "30 carbon atoms arranged in a specific skeleton", correct: true },
+          { text: "20 carbon atoms", correct: false },
+          { text: "Nitrogenous base", correct: false },
+          { text: "Phosphate group", correct: false }
+        ],
+        explanation: "Triterpenes are composed of six isoprene units, giving them a 30-carbon skeleton. This structure is the foundation for a wide variety of complex natural products with diverse functions."
+      },
+      {
+        question: "29. Why is mass spectrometry used in natural product research?",
+        options: [
+          { text: "To separate metabolites", correct: false },
+          { text: "To determine molecular weights of compounds", correct: true },
+          { text: "To color compounds for identification", correct: false },
+          { text: "To purify proteins", correct: false }
+        ],
+        explanation: "Mass spectrometry provides precise molecular weight measurements, helping confirm molecular formulas and aiding in structural elucidation of complex molecules."
+      },
+      {
+        question: "30. Which of the following are involved in the chemical defense of conifer trees?",
+        options: [
+          { text: "Resin acids like abietic acid", correct: true },
+          { text: "Starch molecules", correct: false },
+          { text: "Proline derivatives", correct: false },
+          { text: "Chlorophyll", correct: false }
+        ],
+        explanation: "Conifers produce resin acids (e.g., abietic acid) that deter herbivores and inhibit pathogenic growth, acting as a crucial part of the tree's chemical defense strategy."
+      },
+      {
+        question: "31. What are diterpenoids primarily synthesized from?",
+        options: [
+          { text: "Four isoprene units", correct: true },
+          { text: "Six isoprene units", correct: false },
+          { text: "Fatty acids", correct: false },
+          { text: "Amino acids", correct: false }
+        ],
+        explanation: "Diterpenoids originate from four isoprene units (each with five carbons), giving a total of 20 carbons in their structure. These compounds often play roles in plant hormones and defense."
+      },
+      {
+        question: "32. Which enzyme is involved in the biosynthesis of gibberellins?",
+        options: [
+          { text: "Glycosyltransferase", correct: false },
+          { text: "Dioxygenase", correct: true },
+          { text: "Lipase", correct: false },
+          { text: "ATP synthase", correct: false }
+        ],
+        explanation: "Dioxygenases catalyze oxidation steps in gibberellin biosynthesis, converting precursors into active forms of the hormone. These oxidation reactions are key to regulating plant growth."
+      },
+      {
+        question: "33. How is kaurenoic acid linked to plant growth regulation?",
+        options: [
+          { text: "It is a precursor to gibberellins.", correct: true },
+          { text: "It directly facilitates photosynthesis.", correct: false },
+          { text: "It stores energy for the plant.", correct: false },
+          { text: "It acts as a primary metabolite.", correct: false }
+        ],
+        explanation: "Kaurenoic acid is an essential intermediate that is converted into gibberellins, which control processes such as seed germination, stem elongation, and flowering in plants."
+      },
+      {
+        question: "34. What is a defining characteristic of secondary metabolites?",
+        options: [
+          { text: "They are involved in basic metabolic pathways.", correct: false },
+          { text: "They are always used for energy storage.", correct: false },
+          { text: "They serve specialized functions in the organism.", correct: true },
+          { text: "They are necessary for protein synthesis.", correct: false }
+        ],
+        explanation: "Secondary metabolites are not essential for cell survival but provide advantages such as defense, signaling, or ecological adaptation. Their presence can vary among species and environments."
+      },
+      {
+        question: "35. Which compound is typically not involved in primary metabolism?",
+        options: [
+          { text: "Glucose", correct: false },
+          { text: "ATP", correct: false },
+          { text: "Chlorophyll", correct: false },
+          { text: "Alkaloids", correct: true }
+        ],
+        explanation: "Alkaloids are secondary metabolites. They are not directly required for fundamental metabolic processes but play roles in defense, signaling, and ecological interactions."
+      },
+      {
+        question: "36. What determines the ecological role of natural products like abietic acid in plants?",
+        options: [
+          { text: "Environmental conditions", correct: false },
+          { text: "Its molecular weight", correct: false },
+          { text: "Its ability to participate in protein synthesis", correct: false },
+          { text: "Its color and structure", correct: true }
+        ],
+        explanation: "The chemical structure (and sometimes color) of a natural product dictates how it interacts with other organisms. Abietic acid's structure allows it to deter herbivores and inhibit pathogen growth."
+      },
+      {
+        question: "37. Which of the following tools is essential in isolating complex natural products from a mixture?",
+        options: [
+          { text: "Centrifugation", correct: false },
+          { text: "Liquid chromatography", correct: true },
+          { text: "PCR", correct: false },
+          { text: "Gel electrophoresis", correct: false }
+        ],
+        explanation: "Liquid chromatography separates compounds based on polarity and other properties, making it indispensable for purifying active molecules from plant or microbial extracts."
+      },
+      {
+        question: "38. In which plant part are most secondary metabolites stored?",
+        options: [
+          { text: "Roots", correct: false },
+          { text: "Leaves", correct: false },
+          { text: "Cell vacuoles", correct: true },
+          { text: "Chloroplasts", correct: false }
+        ],
+        explanation: "Secondary metabolites are frequently sequestered in cell vacuoles, preventing them from interfering with primary metabolic pathways while allowing them to be released when needed."
+      },
+      {
+        question: "39. What is the role of pheromones like disparlure in ecological interactions?",
+        options: [
+          { text: "They serve as defense molecules.", correct: false },
+          { text: "They are used for communication, especially in mating.", correct: true },
+          { text: "They help in photosynthesis.", correct: false },
+          { text: "They facilitate nutrient transport.", correct: false }
+        ],
+        explanation: "Pheromones are specialized chemicals that organisms produce to communicate, most notably for mating. Disparlure, for example, is used by certain insects to attract mates."
+      },
+      {
+        question: "40. How does the stereochemistry of a natural product impact its biological function?",
+        options: [
+          { text: "It affects the solubility in water.", correct: false },
+          { text: "It determines its interaction with biological targets.", correct: true },
+          { text: "It influences its color.", correct: false },
+          { text: "It alters the molecular mass.", correct: false }
+        ],
+        explanation: "Stereochemistry--the spatial arrangement of atoms--can greatly affect how a molecule binds to enzymes or receptors. Enantiomers of the same molecule can have distinct effects in a biological system."
+      },
+      {
+        question: "41. Which of the following compounds is an example of a cardiac glycoside?",
+        options: [
+          { text: "Digitoxin", correct: true },
+          { text: "Abietic acid", correct: false },
+          { text: "Squalene", correct: false },
+          { text: "Linalool", correct: false }
+        ],
+        explanation: "Digitoxin is a cardiac glycoside derived from the foxglove plant. Cardiac glycosides feature a steroid nucleus linked to sugar moieties and are used to treat heart failure."
+      },
+      {
+        question: "42. What is the primary role of proline in cellular metabolism?",
+        options: [
+          { text: "Energy storage", correct: false },
+          { text: "Protein synthesis", correct: true },
+          { text: "Enzyme inhibition", correct: false },
+          { text: "Lipid transport", correct: false }
+        ],
+        explanation: "Proline is an amino acid integral to protein structure and folding. It also helps organisms cope with osmotic stress, making it an important metabolite in stress responses."
+      },
+      {
+        question: "43. In plants, kaurenoic acid is important because it is a precursor for which group of hormones?",
+        options: [
+          { text: "Cytokinins", correct: false },
+          { text: "Auxins", correct: false },
+          { text: "Gibberellins", correct: true },
+          { text: "Abscisic acid", correct: false }
+        ],
+        explanation: "Kaurenoic acid is a key precursor in the pathway leading to gibberellins, which govern processes like seed germination, stem elongation, and flowering in plants."
+      },
+      {
+        question: "44. Which type of metabolite is mainly involved in plant defense mechanisms?",
+        options: [
+          { text: "Primary metabolites", correct: false },
+          { text: "Lipids", correct: false },
+          { text: "Secondary metabolites", correct: true },
+          { text: "Proteins", correct: false }
+        ],
+        explanation: "Secondary metabolites such as alkaloids, terpenoids, and phenolics often serve as chemical defenses, protecting plants from herbivores and pathogens."
+      },
+      {
+        question: "45. What is the structural backbone of triterpenes?",
+        options: [
+          { text: "10 carbon atoms", correct: false },
+          { text: "15 carbon atoms", correct: false },
+          { text: "20 carbon atoms", correct: false },
+          { text: "30 carbon atoms", correct: true }
+        ],
+        explanation: "Triterpenes are synthesized from six isoprene units, giving them a 30-carbon skeleton. This structure can be further modified to form various bioactive molecules."
+      },
+      {
+        question: "46. What role do alkaloids play in plants?",
+        options: [
+          { text: "Primary energy source", correct: false },
+          { text: "Storage of nitrogen", correct: false },
+          { text: "Defense against herbivores", correct: true },
+          { text: "Photosynthetic pigments", correct: false }
+        ],
+        explanation: "Alkaloids serve as defense compounds in many plants. Their bitterness and toxicity can deter herbivores and combat pathogens, aiding the plant's survival."
+      },
+      {
+        question: "47. Which natural product class includes resins and essential oils?",
+        options: [
+          { text: "Terpenoids", correct: true },
+          { text: "Alkaloids", correct: false },
+          { text: "Steroids", correct: false },
+          { text: "Phenols", correct: false }
+        ],
+        explanation: "Terpenoids form a broad class of natural products that encompass resins, essential oils, and other volatile substances. They play roles in defense, pollinator attraction, and more."
+      },
+      {
+        question: "48. Which of the following is most commonly used to elucidate the three-dimensional structure of a natural product?",
+        options: [
+          { text: "Mass spectrometry", correct: false },
+          { text: "UV-Vis spectroscopy", correct: false },
+          { text: "Nuclear magnetic resonance (NMR) spectroscopy", correct: true },
+          { text: "Thin-layer chromatography (TLC)", correct: false }
+        ],
+        explanation: "NMR spectroscopy provides detailed insights into the spatial arrangement of atoms in a molecule. It is a cornerstone technique for structural elucidation in natural product chemistry."
+      },
+      {
+        question: "49. What is the ecological significance of resin acids in conifers?",
+        options: [
+          { text: "They act as a food reserve", correct: false },
+          { text: "They serve to attract pollinators", correct: false },
+          { text: "They provide defense against pathogens and herbivores", correct: true },
+          { text: "They regulate plant growth", correct: false }
+        ],
+        explanation: "Resin acids deter herbivores and inhibit the growth of pathogens, playing a protective role in conifer trees. This chemical defense helps the tree survive environmental pressures."
+      },
+      {
+        question: "50. How do secondary metabolites like terpenes affect plant-insect interactions?",
+        options: [
+          { text: "They aid in nutrient absorption", correct: false },
+          { text: "They deter herbivores and attract beneficial insects", correct: true },
+          { text: "They store energy for the plant", correct: false },
+          { text: "They help the plant in reproduction", correct: false }
+        ],
+        explanation: "Terpenes can serve as repellents to herbivores and attractants to pollinators or predators of pests. This dual function helps protect the plant while facilitating pollination."
+      },
+      {
+        question: "51. Which group of secondary metabolites is primarily responsible for the medicinal properties of foxglove (Digitalis species)?",
+        options: [
+          { text: "Flavonoids", correct: false },
+          { text: "Cardiac glycosides", correct: true },
+          { text: "Terpenoids", correct: false },
+          { text: "Alkaloids", correct: false }
+        ],
+        explanation: "Foxglove plants produce cardiac glycosides such as digitoxin, which increase the force of cardiac contractions. These compounds are used in treating heart failure and arrhythmias."
+      },
+      {
+        question: "52. Which method is used to separate a complex mixture of natural products based on polarity?",
+        options: [
+          { text: "Gel electrophoresis", correct: false },
+          { text: "Gas chromatography", correct: false },
+          { text: "High-performance liquid chromatography (HPLC)", correct: true },
+          { text: "Centrifugation", correct: false }
+        ],
+        explanation: "HPLC is a highly effective technique for separating components of a mixture by exploiting differences in polarity, size, and other properties, making it essential for purifying natural products."
+      },
+      {
+        question: "53. Which of the following metabolites plays a role in cell wall formation?",
+        options: [
+          { text: "Lignin", correct: true },
+          { text: "Proline", correct: false },
+          { text: "Abietic acid", correct: false },
+          { text: "ATP", correct: false }
+        ],
+        explanation: "Lignin is a phenolic polymer that fortifies plant cell walls, especially in woody tissues, providing structural support and resistance to microbial degradation."
+      },
+      {
+        question: "54. What is the effect of climate change on the production of secondary metabolites in plants?",
+        options: [
+          { text: "Increases photosynthesis", correct: false },
+          { text: "Alters their concentration and diversity", correct: true },
+          { text: "Has no effect", correct: false },
+          { text: "Reduces all metabolic processes equally", correct: false }
+        ],
+        explanation: "Changes in temperature, moisture, and other environmental factors can affect biosynthetic pathways in plants, leading to variations in both the quantity and diversity of secondary metabolites."
+      },
+      {
+        question: "55. Which of the following techniques is best suited for purifying natural product extracts?",
+        options: [
+          { text: "Crystallization", correct: true },
+          { text: "Centrifugation", correct: false },
+          { text: "Solid-phase extraction", correct: false },
+          { text: "Distillation", correct: false }
+        ],
+        explanation: "Crystallization separates compounds based on their solubility properties, allowing relatively pure crystals of a target compound to form from a saturated solution."
+      },
+      {
+        question: "56. What is the defining characteristic of flavonoids?",
+        options: [
+          { text: "They are nitrogen-containing compounds.", correct: false },
+          { text: "They are aromatic compounds with antioxidant properties.", correct: true },
+          { text: "They contain sulfur atoms.", correct: false },
+          { text: "They are linear terpenes.", correct: false }
+        ],
+        explanation: "Flavonoids are polyphenolic compounds known for their antioxidant capabilities. They also contribute to the pigmentation of flowers and fruits and help protect plants from UV damage."
+      },
+      {
+        question: "57. Which of the following methods is used to quantify the concentration of a natural product in a plant extract?",
+        options: [
+          { text: "Nuclear magnetic resonance (NMR)", correct: false },
+          { text: "Gas chromatography-mass spectrometry (GC-MS)", correct: true },
+          { text: "X-ray crystallography", correct: false },
+          { text: "Thin-layer chromatography (TLC)", correct: false }
+        ],
+        explanation: "GC-MS separates volatile compounds by gas chromatography and identifies them via mass spectrometry, allowing precise quantification of natural product concentrations in complex mixtures."
+      },
+      {
+        question: "58. What is the significance of dereplication in natural product research?",
+        options: [
+          { text: "It speeds up compound synthesis.", correct: false },
+          { text: "It eliminates known compounds to focus on novel discoveries.", correct: true },
+          { text: "It increases extraction efficiency.", correct: false },
+          { text: "It improves compound solubility.", correct: false }
+        ],
+        explanation: "Dereplication identifies and excludes already-known compounds early in the isolation process. This helps researchers focus on finding novel or unique bioactive molecules."
+      },
+      {
+        question: "59. What is the role of kaurenoic acid in the biosynthesis of gibberellins?",
+        options: [
+          { text: "It is an enzyme.", correct: false },
+          { text: "It is a metabolic intermediate.", correct: true },
+          { text: "It is a storage molecule.", correct: false },
+          { text: "It inhibits gibberellin synthesis.", correct: false }
+        ],
+        explanation: "Kaurenoic acid is an intermediate that is converted into active gibberellins, which regulate plant growth, seed germination, and developmental processes."
+      },
+      {
+        question: "60. How do secondary metabolites contribute to plant biodiversity?",
+        options: [
+          { text: "By providing a consistent metabolic pathway in all species", correct: false },
+          { text: "By facilitating specific ecological interactions and adaptations", correct: true },
+          { text: "By acting as primary growth regulators", correct: false },
+          { text: "By limiting genetic variability", correct: false }
+        ],
+        explanation: "Secondary metabolites enable plants to adapt to varied environments, deter herbivores, and form symbiotic relationships, driving ecological specialization and evolutionary diversification."
+      }
+    ];
+    
+    let currentQuestion = 0;
+    let score = 0;
+    let wrongQuestions = [];
+    
+    const quizContainer = document.getElementById('quiz-container');
+    const feedbackDiv = document.getElementById('feedback');
+    const explanationDiv = document.getElementById('explanation');
+    const showExplanationBtn = document.getElementById('showExplanation');
+    const nextBtn = document.getElementById('nextBtn');
+    const resultContainer = document.getElementById('result-container');
+    const summarySection = document.getElementById('summary');
+    const toggleSummaryBtn = document.getElementById('toggleSummary');
+    
+    // Toggle summary section visibility
+    toggleSummaryBtn.addEventListener('click', () => {
+      if (summarySection.style.display === "block") {
+        summarySection.style.display = "none";
+        toggleSummaryBtn.innerText = "Show Summary";
+      } else {
+        summarySection.style.display = "block";
+        toggleSummaryBtn.innerText = "Hide Summary";
+      }
+    });
+    
+    function loadQuestion() {
+      // Clear previous question & feedback
+      feedbackDiv.innerHTML = "";
+      explanationDiv.style.display = "none";
+      showExplanationBtn.style.display = "none";
+      nextBtn.style.display = "none";
+      quizContainer.innerHTML = "";
+      
+      const qData = quizData[currentQuestion];
+      
+      // Create question block
+      const questionBlock = document.createElement('div');
+      questionBlock.className = "question-container";
+      
+      const qTitle = document.createElement('h2');
+      qTitle.innerText = `Question ${currentQuestion + 1}: ${qData.question}`;
+      questionBlock.appendChild(qTitle);
+      
+      // Create options
+      qData.options.forEach((option, index) => {
+        const btn = document.createElement('button');
+        btn.className = "optionBtn";
+        btn.innerText = option.text;
+        btn.onclick = () => selectOption(index, btn);
+        questionBlock.appendChild(btn);
+      });
+      
+      quizContainer.appendChild(questionBlock);
+    }
+    
+    function selectOption(selectedIndex, selectedBtn) {
+      // Disable all option buttons
+      const optionButtons = document.querySelectorAll('.optionBtn');
+      optionButtons.forEach(btn => btn.disabled = true);
+      
+      const qData = quizData[currentQuestion];
+      if(qData.options[selectedIndex].correct) {
+        selectedBtn.classList.add('correct');
+        feedbackDiv.innerHTML = `<p style="color: #00796b;">Correct!</p>`;
+        score++;
+      } else {
+        selectedBtn.classList.add('incorrect');
+        feedbackDiv.innerHTML = `<p style="color: #00796b;">Incorrect!</p>`;
+        // Highlight the correct option
+        optionButtons.forEach(btn => {
+          if(btn.innerText === qData.options.find(opt => opt.correct).text) {
+            btn.classList.add('correct');
+          }
+        });
+        wrongQuestions.push({
+          question: qData.question,
+          explanation: qData.explanation
+        });
+      }
+      showExplanationBtn.style.display = "inline-block";
+      nextBtn.style.display = "inline-block";
+    }
+    
+    showExplanationBtn.addEventListener('click', () => {
+      if(explanationDiv.style.display === "block") {
+        explanationDiv.style.display = "none";
+        showExplanationBtn.innerText = "Show Explanation";
+      } else {
+        explanationDiv.style.display = "block";
+        explanationDiv.innerHTML = `<strong>Detailed Explanation:</strong> ${quizData[currentQuestion].explanation}`;
+        showExplanationBtn.innerText = "Hide Explanation";
+      }
+    });
+    
+    nextBtn.addEventListener('click', () => {
+      currentQuestion++;
+      if(currentQuestion < quizData.length) {
+        loadQuestion();
+      } else {
+        showResults();
+      }
+    });
+    
+    function showResults() {
+      quizContainer.style.display = "none";
+      feedbackDiv.style.display = "none";
+      showExplanationBtn.style.display = "none";
+      nextBtn.style.display = "none";
+      
+      resultContainer.style.display = "block";
+      resultContainer.innerHTML = `<h2>Quiz Completed!</h2><p>Your score: ${score} out of ${quizData.length}</p>`;
+      
+      if(wrongQuestions.length > 0) {
+        resultContainer.innerHTML += `<h3>Review of Incorrect Answers:</h3>`;
+        wrongQuestions.forEach(item => {
+          resultContainer.innerHTML += `<p><strong>Question:</strong> ${item.question}<br><strong>Detailed Explanation:</strong> ${item.explanation}</p><hr>`;
+        });
+      }
+    }
+    
+    // Dark/Light mode toggle functionality
+    const toggleModeBtn = document.getElementById('toggleMode');
+    toggleModeBtn.addEventListener('click', () => {
+      document.body.classList.toggle('dark-mode');
+      if(document.body.classList.contains('dark-mode')) {
+        toggleModeBtn.innerText = "Light Mode";
+      } else {
+        toggleModeBtn.innerText = "Dark Mode";
+      }
+    });
+    
+    // Initialize the Quiz
+    loadQuestion();
+  </script>
+</body>
+</html>
